@@ -4,16 +4,15 @@ import axios from "axios"
 
 export const useUsuarioPresenter = () => {
 
+    const baseUrl = "https://gestion-academica-api.herokuapp.com/api/v1/usuario"
 
     const traerIdUsuario = async (username, password) => {
         try {
-            const body = {
-                usuario: username,
-                clave: password
-            }
             console.log("llamando al servicio usuarioLogin con username", username, "y contraseña", password);
-            const res = await axios.post('https://localhost:7252/api/usuario/login', body);
+            const url = `${baseUrl}/login?username=${username}&password=${password}`
+            const res = await axios.post(url);
             const user = await res.data;
+            console.log( "traer IdUsuario res ", user)
             return user;
         } catch (err) {
             console.error(err)
@@ -21,9 +20,9 @@ export const useUsuarioPresenter = () => {
     }
 
     const altaUsuario = async (body) => {
-        console.log()
         try {
-            const res = await axios.post('https://localhost:7252/api/usuario', body)
+            console.log("llamando al servicio altaUsuario con body", body);
+            const res = await axios.post(`${baseUrl}/`, body)
             const ret = await res.data;
             return ret
         } catch (err) {
@@ -31,8 +30,22 @@ export const useUsuarioPresenter = () => {
         }
     }
 
+    const modificarUsuario = async (body) => {
+        try {
+            console.log("llamando al servicio modificarUsuario con body", body);
+            const res = await axios.put(`${baseUrl}/${body.idUsuario}`, body)
+            const ret = await res.data;
+            return ret
+        } catch (err) {
+            console.error(err)
+        }
+    }
+
+    
+
     return {
         traerIdUsuario,
-        altaUsuario
+        altaUsuario,
+        modificarUsuario
     }
 }

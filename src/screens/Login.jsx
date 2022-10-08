@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react'
+import React, {useState, useContext, useEffect} from 'react'
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
@@ -13,7 +13,8 @@ import Alert from '@mui/material/Alert';
 import { useNavigate } from 'react-router'
 import { useUsuarioPresenter } from '../hooks/UsuarioPresenter'
 import {UserContext} from "../context/UserContext";
-
+import Loader from '../components/commons/Loader'
+import ModalCambioPass from '../components/commons/ModalCambioPass';
 
 const Login = () => {
 
@@ -32,6 +33,12 @@ const Login = () => {
     const [errPass, setErrPass] = useState("");
 
     const [errorLogin, setErrorLogin] = useState("");
+
+    const [loading, setLoading] = useState(false);
+
+    const [modalCambioPass, setModalCambioPass] = useState(false)
+
+    const [userEdit, setUserEdit] = useState({username:"", clave:""})
 
     const call_setUsername = (val) => {
         if (val === "") {
@@ -67,25 +74,29 @@ const Login = () => {
 
     const validarYEnviar = async () => {
         const formOK = validarCampos();
-
         if(formOK){
+            setLoading(true)
             try {
                 const resUser = await traerIdUsuario(username, password);
                 const idUsuario = resUser.idUsuario;
-                console.log("id de usuario recuperado en login", idUsuario);
-                if(user){
-                    //localStorage.setItem("idUsuario", idUsuario)
+                if(resUser){
                     setUser(resUser)
-                    history({
-                        pathname:"/",
-                        state: {idUsuario}
-                    })
+                    if(resUser.forzarClave){
+                        setModalCambioPass(true)
+                        setUserEdit(resUser)
+                    } else {
+                        history({
+                            pathname:"/"
+                        })
+                    }
                 } else{
                     setErrorLogin("error, verifique usuario y contraseña")
                 }
             } catch (error) {
                 console.log(error)
                 setErrorLogin("error, verifique usuario y contraseña")
+            } finally {
+                setLoading(false)
             }
         }
     }
@@ -105,6 +116,12 @@ const Login = () => {
 
     return (
         <Container maxWidth="sm" >
+            <ModalCambioPass
+                open={modalCambioPass}
+                setOpen={setModalCambioPass}
+                user={userEdit}
+                setLoading={setLoading}
+            />
             <Box display="flex" justifyContent="center" m={8} >
                 <Paper>
                     <Grid container spacing={2}>
@@ -171,6 +188,7 @@ const Login = () => {
                     </Box>
                 </Paper >
             </Box>
+            { loading ?  <Loader/> : null  }
         </Container>
     )
 }
