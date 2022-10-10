@@ -196,7 +196,7 @@ const AltaUsuarios = () => {
                                             </MenuItem>
                                         ))}
                                     </TextField>
-                                : null
+                                : <Typography>Cargando carreras...</Typography>
                             }
                             </Grid>
                             <Grid item xs={6}>

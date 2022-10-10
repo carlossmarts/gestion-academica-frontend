@@ -2,10 +2,10 @@ import React, { useContext, useState } from 'react'
 import { Grid, Typography, TextField, IconButton, Box, Icon } from '@mui/material'
 import {blue, grey, red, green} from '@mui/material/colors'
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
-import { fontWeight } from '@mui/system';
 import excelIcon from'../../assets/excel.png';
 import { UserContext } from '../../context/UserContext';
 import UsuarioInhabilitado from '../commons/UsuarioInhabilitado'
+import {styles} from '../../styles/styles'
 
 const Reportes = () => {
 
@@ -33,26 +33,6 @@ const Reportes = () => {
 }
 
 export default Reportes
-
-const styles = {
-    title:{
-        fontSize:18,
-        color: blue[700],
-        fontWeight: "bold"
-    },
-    label:{
-        fontSize:16,
-        color: blue[700]
-    }, 
-    pdf:{
-        fontSize: 30,
-        color: red[700],
-    },
-    excel:{
-        fontSize: 30,
-        color: green[700],
-    }
-}
 
 
 //Subcompomnentes

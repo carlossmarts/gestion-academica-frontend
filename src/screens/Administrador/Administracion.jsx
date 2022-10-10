@@ -12,7 +12,7 @@ const Administracion = () => {
 
   return (
    
-    <Grid container direction='row'>
+    <Grid container direction='row' alignItems="flex-start">
         <Grid item  xs={12} sm={3}container >
             <MenuLateral
               selected={selected}

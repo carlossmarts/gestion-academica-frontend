@@ -121,6 +121,7 @@ const Login = () => {
                 setOpen={setModalCambioPass}
                 user={userEdit}
                 setLoading={setLoading}
+                irAHome={irAHome}
             />
             <Box display="flex" justifyContent="center" m={8} >
                 <Paper>
