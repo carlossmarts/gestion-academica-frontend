@@ -198,13 +198,15 @@ const AgregarCursada = (props) =>{
 	}
 
   return(
+	
 	<Grid container spacing={2}>
 		<Grid item container xs={12}>
           	<Typography style={styles.title}> Agregar cursada</Typography>
 		</Grid>
 		<Grid item container xs={12}>
 		{
-			carreras.length !== 0 ?
+			carreras !== undefined ?
+				carreras.length !== 0 ?
 					<TextField
 						style={{width:"50%"}}
 						name="idCarrera"
@@ -220,7 +222,8 @@ const AgregarCursada = (props) =>{
 							</MenuItem>
 						))}
 					</TextField>
-			: <Typography>Cargando carreras...</Typography>
+				: <Typography>Cargando carreras...</Typography>
+			: null
 		}
 		</Grid>
 		{
@@ -228,44 +231,48 @@ const AgregarCursada = (props) =>{
 				<Grid item xs={12} container alignItems="center" spacing={1}>
 					<Grid item xs={6} md={3}>
 						{
-							materias.length !== 0 ?
-									<TextField
-										fullWidth
-										select
-										size="small"
-										label="Materia"
-										value={idMateria}
-										onChange={(e)=>{setIdMateria(e.target.value)}}
-										error={error.idDocente}
-									>
-										{materias.map((option) => (
-											<MenuItem key={option.idMateria} value={option.idMateria}>
-												{option.nombre}
-											</MenuItem>
-										))}
-									</TextField>
+							materias !== undefined ?
+								materias.length !== 0 ?
+										<TextField
+											fullWidth
+											select
+											size="small"
+											label="Materia"
+											value={idMateria}
+											onChange={(e)=>{setIdMateria(e.target.value)}}
+											error={error.idDocente}
+										>
+											{materias.map((option) => (
+												<MenuItem key={option.idMateria} value={option.idMateria}>
+													{option.nombre}
+												</MenuItem>
+											))}
+										</TextField>
+								: <Typography>Cargando docentes...</Typography>
 							: <Typography>Cargando docentes...</Typography>
 						}
 					</Grid>
 					<Grid item xs={6} md={3}>
 						{
-							docentes.length !== 0 ?
-									<TextField
-										fullWidth
-										select
-										size="small"
-										label="Docente"
-										value={idDocente}
-										onChange={(e)=>{setIdDocente(e.target.value)}}
-										error={error.idDocente}
-									>
-										{docentes.map((option) => (
-											<MenuItem key={option.idUsuario} value={option.idUsuario}>
-												{`${option.apellido}${option.idDocente!== 0 ?", ": ""} ${option.nombre}`}
-											</MenuItem>
-										))}
-									</TextField>
-							: <Typography>Cargando docentes...</Typography>
+							docentes !== undefined ?
+								docentes.length !== 0 ?
+										<TextField
+											fullWidth
+											select
+											size="small"
+											label="Docente"
+											value={idDocente}
+											onChange={(e)=>{setIdDocente(e.target.value)}}
+											error={error.idDocente}
+										>
+											{docentes.map((option) => (
+												<MenuItem key={option.idUsuario} value={option.idUsuario}>
+													{`${option.apellido}${option.idDocente!== 0 ?", ": ""} ${option.nombre}`}
+												</MenuItem>
+											))}
+										</TextField>
+								: <Typography>Cargando docentes...</Typography>
+							: null
 						}
 					</Grid>					
 					<Grid item xs={6} md={3} container justifyContent="flex-start">
