@@ -8,43 +8,43 @@ import GestionInscripciones from '../../components/Administrador/GestionInscripc
 
 const Administracion = () => {
 
-  const [selected, setSelected] = useState("")
+    const [selected, setSelected] = useState("")
 
-  return (
-   
-    <Grid container direction='row' alignItems="flex-start">
-        <Grid item  xs={12} sm={3}container >
-            <MenuLateral
-              selected={selected}
-              setSelected={setSelected}
-              />
-        </Grid>
-        <Grid item  xs={12} sm={9}container >
-            {
-              selected === "altaUsuarios" ?
-              <AltaUsuarios/>
-              : null
-            }
-            {
-              selected === "cuatrimestres" ?
-              <GestionCuatrimestres/>
-              : null
-            }
-            {
-              selected === "examenes" ?
-              <GestionExamenes/>
-              : null
-            }
-            {
-              selected === "inscripciones" ?
-              <GestionInscripciones/>
-              : null
-            }
+    return (
+
+        <Grid container direction='row' alignItems="flex-start">
+            <Grid item  xs={12} sm={2}container >
+                <MenuLateral
+                    selected={selected}
+                    setSelected={setSelected}
+                />
+            </Grid>
+            <Grid item  xs={12} sm={10}container >
+                {
+                    selected === "altaUsuarios" ?
+                        <AltaUsuarios/>
+                        : null
+                }
+                {
+                    selected === "cuatrimestres" ?
+                        <GestionCuatrimestres/>
+                        : null
+                }
+                {
+                    selected === "examenes" ?
+                        <GestionExamenes/>
+                        : null
+                }
+                {
+                    selected === "inscripciones" ?
+                        <GestionInscripciones/>
+                        : null
+                }
+            </Grid>
+
         </Grid>
 
-    </Grid>
-    
-  )
+    )
 }
 
 export default Administracion

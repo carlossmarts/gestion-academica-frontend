@@ -48,12 +48,10 @@ const Analitico = (props) =>{
     return (
         <Grid container>
             <Typography style={styles.title}> Descargar analítico</Typography>
-            <Grid item xs={12} container alignItems="center">
-                <Grid item xs={12} md={1} container justifyContent="flex-start">
-                    <Typography style={styles.label}> Estudiante: </Typography>
-                </Grid>
-                <Grid item xs={8} md={2} container justifyContent="flex-start">
+            <Grid item xs={12} container alignItems="center" spacing={2}>
+                <Grid item >
                     <TextField
+                        label={"Estudiante"}
                         name="estudiante"
                         value={estudiante}
                         onChange={(e)=>{setEstudiante(e.target.value)}}
@@ -61,7 +59,7 @@ const Analitico = (props) =>{
                         size="small"
                     />
                 </Grid>
-                <Grid item xs={3} container justifyContent="flex-start">
+                <Grid item >
                     <IconButton onClick={download} disabled={estudiante=== ""}>
                         <PictureAsPdfIcon style={styles.pdf}/>
                     </IconButton>
@@ -82,14 +80,12 @@ const EstudiantesXCursada = (props)=>{
     }
 
     return (
-        <Grid container>
+        <Grid container >
             <Typography style={styles.title}> Descargar listado de estudiantes por cursada</Typography>
-            <Grid item xs={12} container alignItems="center">
-                <Grid item xs={12} md={1} container justifyContent="flex-start">
-                    <Typography style={styles.label}> Materia: </Typography>
-                </Grid>
-                <Grid item xs={8} md={3} container justifyContent="flex-start">
+            <Grid item xs={12} container alignItems="center" spacing={2}>
+                <Grid item >
                     <TextField
+                        label="Materia"
                         name="materia"
                         value={materia}
                         onChange={(e)=>{setMateria(e.target.value)}}
@@ -97,11 +93,9 @@ const EstudiantesXCursada = (props)=>{
                         size="small"
                     />
                 </Grid>
-                <Grid item xs={12} md={1} container justifyContent="flex-start">
-                    <Typography style={styles.label}> Cursada: </Typography>
-                </Grid>
-                <Grid item xs={8} md={2} container justifyContent="flex-start">
+                <Grid item >
                     <TextField
+                        label="cursada"
                         name="cursada"
                         value={cursada}
                         onChange={(e)=>{setCursada(e.target.value)}}
@@ -109,7 +103,7 @@ const EstudiantesXCursada = (props)=>{
                         size="small"
                     />
                 </Grid>
-                <Grid item xs={3} container justifyContent="flex-start">
+                <Grid item>
                     <IconButton onClick={download} disabled={materia=== "" || cursada === ""}>
                         <img src={excelIcon}/>
                     </IconButton>
@@ -132,21 +126,13 @@ const EstudiantesXFinalMateria = (props)=>{
         alert("TODO- descarga listado de estudiantes inscriptos al algun final de materia PDF")
     }
 
-    const ExcelIcon = (
-        <Icon>
-            <img src="logo192.png"/>
-        </Icon>
-    )
-
     return (
         <Grid container>
             <Typography style={styles.title}> Descargar listado de estudiantes inscriptos a finales</Typography>
-            <Grid item xs={12} container alignItems="center">
-                <Grid item xs={12} md={1} container justifyContent="flex-start">
-                    <Typography style={styles.label}> Materia: </Typography>
-                </Grid>
-                <Grid item xs={8} md={2} container justifyContent="flex-start">
+            <Grid item xs={12} container alignItems="center" spacing={2}>
+                <Grid item >
                     <TextField
+                        label="materia"
                         name="materia"
                         value={materia}
                         onChange={(e)=>{setMateria(e.target.value)}}
@@ -155,7 +141,7 @@ const EstudiantesXFinalMateria = (props)=>{
                     />
                 </Grid>
                 
-                <Grid item xs={1} container spaciong={1} justifyContent="flex-start">
+                <Grid item >
                     <IconButton onClick={downloadXLS} disabled={materia=== "" }>
                        <img src={excelIcon} />
                     </IconButton>
@@ -180,12 +166,10 @@ const LlamadoFinales = (props) =>{
     return (
         <Grid container>
             <Typography style={styles.title}> Descargar materias por llamado a finales</Typography>
-            <Grid item xs={12} container alignItems="center">
-                <Grid item xs={12} md={1} container justifyContent="flex-start">
-                    <Typography style={styles.label}> Llamado: </Typography>
-                </Grid>
-                <Grid item xs={8} md={2} container justifyContent="flex-start">
+            <Grid item xs={12} container alignItems="center" spacing={2}>
+                <Grid item >
                     <TextField
+                        label="Llamado"
                         name="llamado"
                         value={llamado}
                         onChange={(e)=>{setLlamado(e.target.value)}}
@@ -193,7 +177,7 @@ const LlamadoFinales = (props) =>{
                         size="small"
                     />
                 </Grid>
-                <Grid item xs={3} container justifyContent="flex-start">
+                <Grid item >
                     <IconButton onClick={download} disabled={llamado=== ""}>
                         <PictureAsPdfIcon style={styles.pdf}/>
                     </IconButton>
