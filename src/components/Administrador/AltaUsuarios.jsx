@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from 'react'
 
 import Alert from '@mui/material/Alert';
 import { Grid, Typography, Box, TextField, Button, Container, MenuItem} from '@mui/material'
+import {styles} from "../../styles/styles";
 
 import { useNavigate } from 'react-router'
 import {UserContext} from "../../context/UserContext";
@@ -30,7 +31,7 @@ const AltaUsuarios = () => {
         idTipoUsuario:0,
         idCarrera: 0
     }
-    
+
     const [form, setForm] = useState(newForm)
     const [error, setError] = useState(newForm)
     const [loading, setLoading] = useState(false)
@@ -38,11 +39,11 @@ const AltaUsuarios = () => {
     const [alertSeverity, setAlertSeverity] = useState("")
 
     const [carreras, setCarreras] = useState([])
-    
+
     useEffect(()=>{
         getCarreras()
-        .then( res => setCarreras(res))
-        .catch(e=>console.log(e))
+            .then( res => setCarreras(res))
+            .catch(e=>console.log(e))
     }, [])
 
     const handleChange = (e)=>{
@@ -94,7 +95,7 @@ const AltaUsuarios = () => {
             retorno = false;
         }
         setError(tempError)
-        
+
         return retorno;
     }
 
@@ -115,128 +116,126 @@ const AltaUsuarios = () => {
             }
         }
     }
-    
+
 
     return (
         <>
-            <Box mt={8} />
-            <Container maxWidth="md" >
-                    <Box m={4}>
-                        <Grid container spacing={2}>
-                            <Grid container item justifyContent="center" spacing={1}>
-                                <Box m={3}>
-                                    <Typography variant="h5" color="primary"> Nuevo usuario</Typography>
-                                </Box>
-                            </Grid>
-
-                            <Grid item xs={6}>
-                                <TextField
-                                    fullWidth
-                                    name="nombre"
-                                    label="Nombre"
-                                    variant="outlined"
-                                    value={form.nombre}
-                                    onChange={handleChange}
-                                    error={error.nombre !== "" ? true : false}
-                                    helperText={error.nombre}
-                                />
-                            </Grid>
-                            <Grid item xs={6}>
-                                <TextField
-                                    fullWidth
-                                    name="apellido"
-                                    label="Apellido"
-                                    variant="outlined"
-                                    value={form.apellido}
-                                    onChange={handleChange}
-                                    error={error.apellido !== "" ? true : false}
-                                    helperText={error.apellido}
-                                />
-                            </Grid>
-                            <Grid item xs={6}>
-                                <TextField
-                                    fullWidth
-                                    name="dni"
-                                    label="DNI"
-                                    variant="outlined"
-                                    value={form.dni}
-                                    onChange={handleChange}
-                                    error={error.dni !== "" ? true : false}
-                                    helperText={error.dni}
-                                />
-                            </Grid>
-                            <Grid item xs={6}>
-                                <TextField
-                                    fullWidth
-                                    name="correo"
-                                    label="Email"
-                                    variant="outlined"
-                                    value={form.correo}
-                                    onChange={handleChange}
-                                    error={error.correo !== "" ? true : false}
-                                    helperText={error.correo}
-                                />
-                            </Grid>
-                            <Grid item xs={6}>
-                            {
-                                carreras.length !== 0 ?
-                                    <TextField
-                                        fullWidth
-                                        name="idCarrera"
-                                        select
-                                        label="Carrera"
-                                        value={form.idCarrera}
-                                        onChange={handleChange}
-                                        error={error.idCarrera !== 0 && error.idCarrera !== "" ? true : false}
-                                        helperText={error.idCarrera !== 0 ? error.idCarrera : ""}
-                                    >
-                                        {carreras.map((option) => (
-                                            <MenuItem key={option.idCarrera} value={option.idCarrera}>
-                                                {option.nombre}
-                                            </MenuItem>
-                                        ))}
-                                    </TextField>
-                                : <Typography>Cargando carreras...</Typography>
-                            }
-                            </Grid>
-                            <Grid item xs={6}>
-                                <TextField
-                                    fullWidth
-                                    name="idTipoUsuario"
-                                    select
-                                    label="Tipo de usuario"
-                                    value={form.idTipoUsuario}
-                                    onChange={handleChange}
-                                    error={error.idTipoUsuario !== 0 && error.idTipoUsuario !== "" ? true : false}
-                                    helperText={error.idTipoUsuario !== 0 ? error.idTipoUsuario : ""}
-                                >
-                                        <MenuItem key={0} value={0}>
-                                            Seleccione...
-                                        </MenuItem>
-                                        <MenuItem key={1} value={1}>
-                                            Estudiante
-                                        </MenuItem>
-                                        <MenuItem key={2} value={2}>
-                                            Docente
-                                        </MenuItem>
-                                </TextField>
-                            </Grid>
-                        </Grid>
-                    </Box>
-                    <Box display="flex" justifyContent="center">
-                        {
-                            alertMsg ?
-                                <Alert severity={alertSeverity}>{alertMsg} </Alert>
-                                :
-                                <></>
-                        }
-                    </Box>
-                    <Box my={2} mx={4} display="flex" justifyContent="flex-end" alignItems="center">
-                        <Button onClick={validarYEnviar} variant="contained" color="primary">
-                            Aceptar
-                        </Button>
-                    </Box>
-            </Container>
+            <Grid container spacing={2}>
+                <Grid item xs={12}>
+                        <Typography style={styles.title}> Nuevo usuario</Typography>
+                </Grid>
+                <Grid item xs={6} sm={4}>
+                    <TextField
+                        fullWidth
+                        size="small"
+                        name="nombre"
+                        label="Nombre"
+                        variant="outlined"
+                        value={form.nombre}
+                        onChange={handleChange}
+                        error={error.nombre !== "" ? true : false}
+                        helperText={error.nombre}
+                    />
+                </Grid>
+                <Grid item xs={6} sm={4}>
+                    <TextField
+                        fullWidth
+                        size="small"
+                        name="apellido"
+                        label="Apellido"
+                        variant="outlined"
+                        value={form.apellido}
+                        onChange={handleChange}
+                        error={error.apellido !== "" ? true : false}
+                        helperText={error.apellido}
+                    />
+                </Grid>
+                <Grid item xs={6} sm={4}>
+                    <TextField
+                        fullWidth
+                        size="small"
+                        name="dni"
+                        label="DNI"
+                        variant="outlined"
+                        value={form.dni}
+                        onChange={handleChange}
+                        error={error.dni !== "" ? true : false}
+                        helperText={error.dni}
+                    />
+                </Grid>
+                <Grid item xs={6} sm={4}>
+                    <TextField
+                        fullWidth
+                        size="small"
+                        name="correo"
+                        label="Email"
+                        variant="outlined"
+                        value={form.correo}
+                        onChange={handleChange}
+                        error={error.correo !== "" ? true : false}
+                        helperText={error.correo}
+                    />
+                </Grid>
+                <Grid item xs={6} sm={4}>
+                    {
+                        carreras.length !== 0 ?
+                            <TextField
+                                fullWidth
+                                size="small"
+                                name="idCarrera"
+                                select
+                                label="Carrera"
+                                value={form.idCarrera}
+                                onChange={handleChange}
+                                error={error.idCarrera !== 0 && error.idCarrera !== "" ? true : false}
+                                helperText={error.idCarrera !== 0 ? error.idCarrera : ""}
+                            >
+                                {carreras.map((option) => (
+                                    <MenuItem key={option.idCarrera} value={option.idCarrera}>
+                                        {option.nombre}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+                            : <Typography>Cargando carreras...</Typography>
+                    }
+                </Grid>
+                <Grid item xs={6} sm={4}>
+                    <TextField
+                        fullWidth
+                        size="small"
+                        name="idTipoUsuario"
+                        select
+                        label="Tipo de usuario"
+                        value={form.idTipoUsuario}
+                        onChange={handleChange}
+                        error={error.idTipoUsuario !== 0 && error.idTipoUsuario !== "" ? true : false}
+                        helperText={error.idTipoUsuario !== 0 ? error.idTipoUsuario : ""}
+                    >
+                        <MenuItem key={0} value={0}>
+                            Seleccione...
+                        </MenuItem>
+                        <MenuItem key={1} value={1}>
+                            Estudiante
+                        </MenuItem>
+                        <MenuItem key={2} value={2}>
+                            Docente
+                        </MenuItem>
+                    </TextField>
+                </Grid>
+                <Grid item xs={12}>
+                    <Button onClick={validarYEnviar} variant="contained" color="primary">
+                        Aceptar
+                    </Button>
+                </Grid>
+            </Grid>
+            <Box display="flex" justifyContent="center">
+                {
+                    alertMsg ?
+                        <Alert severity={alertSeverity}>{alertMsg} </Alert>
+                        :
+                        <></>
+                }
+            </Box>
             {
                 loading ? <Loader/> : null
             }
