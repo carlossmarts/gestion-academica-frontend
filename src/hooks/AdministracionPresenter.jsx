@@ -1,6 +1,8 @@
 
 import axios from 'axios'
 
+import {getCurrentDate} from "../UtilsMethods";
+
 export const useAdministracionPresenter = () => {
 
     const baseUrl = "https://gestion-academica-api.herokuapp.com/api/administracion"
@@ -40,8 +42,35 @@ export const useAdministracionPresenter = () => {
             const res = await axios.get(url);
             const materias = await res.data;
             materias.unshift({ idMateria:0, nombre:"seleccione..."})
-            console.log( "getMateriasByCarrera response ", materias)
+            console.log( "getMateriasByCarreraresponse ", materias)
             return materias;
+        } catch (err) {
+            console.error(err)
+        }
+    }
+
+    const saveInscripcion = async (body) =>{
+        try {
+            console.log("llamando al servicio saveInscripcion - body", body)
+            const url = `${baseUrl}/inscripcion`
+            const res = await axios.get(url, body);
+            const data = await res.data;
+            console.log( "saveInscripcion response ", data)
+        } catch (err) {
+            console.error(err)
+        }
+    }
+
+    const getInscripciones = async(idInstancia) =>{
+        const date = getCurrentDate("-")
+        try {
+            console.log("llamando al servicio getInscripciones")
+            const url = `${baseUrl}/inscripciones/$idInstancia=${idInstancia}&fecha=${date}`
+            const res = await axios.get(url);
+            const inscripciones = await res.data;
+            inscripciones.unshift({ idInscripcion:0, nombre:"seleccione..."})
+            console.log( "getInscripciones response ", inscripciones)
+            return inscripciones;
         } catch (err) {
             console.error(err)
         }
@@ -50,6 +79,8 @@ export const useAdministracionPresenter = () => {
     return {
         getCarreras, 
         getTurnos, 
-        getMateriasByCarrera
+        getMateriasByCarrera,
+        getInscripciones,
+        saveInscripcion
     }
 }

@@ -13,13 +13,13 @@ const Administracion = () => {
     return (
 
         <Grid container direction='row' alignItems="flex-start">
-            <Grid item  xs={12} sm={2}container >
+            <Grid item  xs={12} sm={3}container >
                 <MenuLateral
                     selected={selected}
                     setSelected={setSelected}
                 />
             </Grid>
-            <Grid item  xs={12} sm={10}container >
+            <Grid item  xs={12} sm={9}container >
                 {
                     selected === "altaUsuarios" ?
                         <AltaUsuarios/>

@@ -5,29 +5,15 @@ import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import {styles} from '../../styles/styles'
 
 import Acordeon from '../commons/Acordeon'
-
 import AltaCursadaOExamen from './AltaCursadaOExamen';
 
 const GestionCuatrimestres = () => {
   return (
     <Grid container>
-		<Grid item xs={12} container spacing={2}>
-            <Grid item xs={12}>
-                <Acordeon
-                    titulo="Descargar cursadas por cuatrimestre"
-                    ancho="xl"
-                >
-                    <BuscarCursadas/>
-                </Acordeon>
-            </Grid>
-            <Grid item xs={12}>
-                <Acordeon
-                    titulo="Agregar cursada"
-                    ancho="xl"
-                >
-			        <AltaCursadaOExamen origen={"cursada"}/>
-                </Acordeon>
-            </Grid>
+		<Grid item xs={10}>
+			<BuscarCursadas/>
+			<hr style={{width:"100%"}}/>
+			<AltaCursadaOExamen origen={"cursada"}/>
 		</Grid>
     </Grid>
   )

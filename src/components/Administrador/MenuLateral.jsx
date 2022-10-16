@@ -20,7 +20,15 @@ const MenuLateral = (props) => {
                     >
                         <Typography><strong>Alta Usuarios</strong></Typography>
                     </MenuItem>
-               
+
+                    <MenuItem
+                        style={styles.menuItem}
+                        selected={selected === "inscripciones" ? true : false}
+                        onClick={()=>{setSelected("inscripciones")}}
+                    >
+                        <Typography><strong>Inscripciones</strong></Typography>
+                    </MenuItem>
+
                     <MenuItem 
                         style={styles.menuItem}
                         selected={selected === "cuatrimestres" ? true : false}
@@ -36,14 +44,7 @@ const MenuLateral = (props) => {
                     >
                         <Typography><strong>Gestión Exámenes</strong></Typography>
                     </MenuItem>
-              
-                    <MenuItem 
-                        style={styles.menuItem}
-                        selected={selected === "inscripciones" ? true : false}
-                        onClick={()=>{setSelected("inscripciones")}}
-                    >
-                        <Typography><strong>Gestión Inscripciones</strong></Typography>
-                    </MenuItem>
+
                 </MenuList>
           </Paper>
       </>

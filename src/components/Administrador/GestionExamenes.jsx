@@ -1,8 +1,11 @@
 import React from 'react'
+import AltaCursadaOExamen from "./AltaCursadaOExamen";
 
 const GestionExamenes = () => {
   return (
-    <div>GestionExamenes</div>
+      <AltaCursadaOExamen
+        origen="examen"
+      />
   )
 }
 

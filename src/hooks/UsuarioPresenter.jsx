@@ -47,7 +47,7 @@ export const useUsuarioPresenter = () => {
             const url = `${baseUrl}/docentes/${idCarrera}`
             const res = await axios.get(url);
             const docentes = await res.data;
-            docentes.unshift({idDocente:0, nombre:"", apellido:"seleccione..."})
+            docentes.unshift({idUsuario:0, nombre:"", apellido:"seleccione..."})
             console.log( "getDocentesByCarrera response ", docentes)
             return docentes;
         } catch (err) {
