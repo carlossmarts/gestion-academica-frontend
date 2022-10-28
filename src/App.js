@@ -12,7 +12,7 @@ import UserProvider from './context/UserContext';
 import Login from './screens/Login'
 import Administracion from './screens/Administrador/Administracion';
 import Reportes from './components/Administrador/Reportes';
-
+import GestionEstudiante from './screens/Estudiante/GestionEstudiante';
 
 const App = () => {
   const theme = createTheme();
@@ -28,6 +28,8 @@ const App = () => {
               <Route exact path={'/'} element={<Home/>} />
               <Route exact path={'/login'} element={<Login />} />
               <Route exact path={'/administracion'} element={<Administracion />} />
+              <Route exact path={'/gestionestudiante'} element={<GestionEstudiante />} />
+              <Route exact path={'/inscripciones'} element={<GestionEstudiante />} />
               <Route exact path={'/reportes'} element={<Reportes />} />
             </Routes>
             </Box>

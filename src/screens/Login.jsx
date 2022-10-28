@@ -1,4 +1,4 @@
-import React, {useState, useContext, useEffect} from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import TextField from '@mui/material/TextField';
@@ -12,13 +12,13 @@ import Paper from '@mui/material/Paper';
 import Alert from '@mui/material/Alert';
 import { useNavigate } from 'react-router'
 import { useUsuarioPresenter } from '../hooks/UsuarioPresenter'
-import {UserContext} from "../context/UserContext";
+import { UserContext } from "../context/UserContext";
 import Loader from '../components/commons/Loader'
 import ModalCambioPass from '../components/commons/ModalCambioPass';
 
 const Login = () => {
 
-    const {user, setUser} = useContext(UserContext)
+    const { user, setUser } = useContext(UserContext)
 
     const { traerIdUsuario } = useUsuarioPresenter()
 
@@ -38,7 +38,7 @@ const Login = () => {
 
     const [modalCambioPass, setModalCambioPass] = useState(false)
 
-    const [userEdit, setUserEdit] = useState({username:"", clave:""})
+    const [userEdit, setUserEdit] = useState({ username: "", clave: "" })
 
     const call_setUsername = (val) => {
         if (val === "") {
@@ -67,29 +67,30 @@ const Login = () => {
         setVisible(false);
     }
 
-    const irAHome = ()=>{
+    const irAHome = () => {
         limpiarCampos()
         history("/")
     }
 
     const validarYEnviar = async () => {
         const formOK = validarCampos();
-        if(formOK){
+        if (formOK) {
             setLoading(true)
             try {
                 const resUser = await traerIdUsuario(username, password);
                 const idUsuario = resUser.idUsuario;
-                if(resUser){
+                if (resUser) {
                     setUser(resUser)
-                    if(resUser.forzarClave){
+                    if (resUser.forzarClave) {
                         setModalCambioPass(true)
                         setUserEdit(resUser)
                     } else {
-                        history({
-                            pathname:"/"
-                        })
+                        resUser.idTipoUsuario === 3 ?
+                            history({ pathname: "/" }) :
+                            resUser.idTipoUsuario === 2 ?
+                                history({ pathname: "/" }) : history({ pathname: "/" })
                     }
-                } else{
+                } else {
                     setErrorLogin("error, verifique usuario y contraseña")
                 }
             } catch (error) {
@@ -133,46 +134,46 @@ const Login = () => {
                         </Grid>
                         <Grid container item >
                             <TextField
-                                style={{margin: 8, width:"95%"}}
+                                style={{ margin: 8, width: "95%" }}
                                 id="userName"
                                 label="Nombre de usuario"
                                 variant="outlined"
                                 value={username}
-                                onChange={e=>{call_setUsername(e.target.value)}}
-                                error= {errUserName!== ""? true : false}
-                                helperText = {errUserName}
+                                onChange={e => { call_setUsername(e.target.value) }}
+                                error={errUserName !== "" ? true : false}
+                                helperText={errUserName}
 
                             />
                         </Grid>
                         <Grid container item >
                             <TextField
-                                style={{margin: 8, width:"95%"}}
+                                style={{ margin: 8, width: "95%" }}
                                 id="password"
                                 label="contraseña"
                                 variant="outlined"
                                 type={visible ? "text" : "password"}
                                 value={password}
-                                onChange={e=>{call_setPassword(e.target.value)}}
-                                error= {errPass!== ""? true : false}
-                                helperText = {errPass}
+                                onChange={e => { call_setPassword(e.target.value) }}
+                                error={errPass !== "" ? true : false}
+                                helperText={errPass}
 
                             />
                         </Grid>
                         <Grid container item justifyContent="center" >
-                            <IconButton onClick={()=>{setVisible(!visible)}}>
+                            <IconButton onClick={() => { setVisible(!visible) }}>
                                 {
                                     visible
                                         ?
-                                        <VisibilityIcon/>
+                                        <VisibilityIcon />
                                         :
-                                        <VisibilityOffIcon/>
+                                        <VisibilityOffIcon />
                                 }
                             </IconButton>
                         </Grid>
                     </Grid>
                     <Box display="flex" justifyContent="center">
                         {
-                            errorLogin?
+                            errorLogin ?
                                 <Alert severity="warning">{errorLogin} </Alert>
                                 :
                                 <></>
@@ -189,7 +190,7 @@ const Login = () => {
                     </Box>
                 </Paper >
             </Box>
-            { loading ?  <Loader/> : null  }
+            {loading ? <Loader /> : null}
         </Container>
     )
 }

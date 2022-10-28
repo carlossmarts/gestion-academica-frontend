@@ -1,19 +1,19 @@
 import React, {useState, useEffect} from 'react'
 import {Grid, Box} from "@mui/material";
 import MenuLateral from "../../components/Administrador/MenuLateral";
-import AltaUsuarios from '../../components/Administrador/AltaUsuarios';
 import GestionCuatrimestres from '../../components/Administrador/GestionCuatrimestres'
 import GestionExamenes from '../../components/Administrador/GestionExamenes'
 import GestionInscripciones from '../../components/Administrador/GestionInscripciones'
+import GestionInscripcionesAlumno from '../../components/Estudiantes/GestionInscripcionesAlumno';
 
-const Administracion = () => {
+const GestionEstudiante = () => {
 
     const [selected, setSelected] = useState("")
+    
     useEffect(() => {
         console.log(selected +
-            " seleccionado")
+            " UPDATEADO")
     }, [selected])
-
 
     return (
 
@@ -26,8 +26,8 @@ const Administracion = () => {
             </Grid>
             <Grid item  xs={12} sm={9}container >
                 {
-                    selected === "altaUsuarios" ?
-                        <AltaUsuarios/>
+                    selected === "incripcionAlumno" ?
+                        <GestionInscripcionesAlumno/>
                         : null
                 }
                 {
@@ -52,4 +52,4 @@ const Administracion = () => {
     )
 }
 
-export default Administracion
+export default GestionEstudiante
