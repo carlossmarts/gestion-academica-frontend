@@ -5,6 +5,7 @@ import axios from "axios"
 export const useUsuarioPresenter = () => {
 
     const baseUrl = "https://gestion-academica-api.herokuapp.com/api/v1/usuario"
+    const defaultUsuario = {idUsuario:0, nombre:"", apellido:"seleccione..."}
 
     const traerIdUsuario = async (username, password) => {
         try {
@@ -47,9 +48,23 @@ export const useUsuarioPresenter = () => {
             const url = `${baseUrl}/docentes/${idCarrera}`
             const res = await axios.get(url);
             const docentes = await res.data;
-            docentes.unshift({idUsuario:0, nombre:"", apellido:"seleccione..."})
+            docentes.unshift(defaultUsuario)
             console.log( "getDocentesByCarrera response ", docentes)
             return docentes;
+        } catch (err) {
+            console.error(err)
+        }
+    }
+
+    const getEstudiantes = async ()=>{
+        try {
+            console.log("llamando al servicio getEstudiantes")
+            const url = `${baseUrl}/estudiantes`
+            const res = await axios.get(url);
+            const estudiantes = await res.data;
+            estudiantes.unshift(defaultUsuario)
+            console.log( "getEstudiantes response ", estudiantes)
+            return estudiantes;
         } catch (err) {
             console.error(err)
         }
@@ -58,9 +73,11 @@ export const useUsuarioPresenter = () => {
     
 
     return {
+        defaultUsuario,
         traerIdUsuario,
         altaUsuario,
         modificarUsuario,
-        getDocentesByCarrera
+        getDocentesByCarrera,
+        getEstudiantes
     }
 }

@@ -17,8 +17,8 @@ import Loader from '../commons/Loader'
 const AltaUsuarios = () => {
 
     const history = useNavigate();
+    const {getCarreras, defaultCarrera} = useAdministracionPresenter()
     const { altaUsuario } = useUsuarioPresenter()
-    const {getCarreras} = useAdministracionPresenter()
 
     const {user, setUser} = useContext(UserContext)
 
@@ -38,7 +38,7 @@ const AltaUsuarios = () => {
     const [alertMsg, setAlertMsg] = useState("");
     const [alertSeverity, setAlertSeverity] = useState("")
 
-    const [carreras, setCarreras] = useState([])
+    const [carreras, setCarreras] = useState([defaultCarrera])
 
     useEffect(()=>{
         getCarreras()
@@ -178,7 +178,7 @@ const AltaUsuarios = () => {
                 </Grid>
                 <Grid item xs={6} sm={4}>
                     {
-                        carreras.length !== 0 ?
+                        carreras ?
                             <TextField
                                 fullWidth
                                 size="small"
@@ -196,7 +196,7 @@ const AltaUsuarios = () => {
                                     </MenuItem>
                                 ))}
                             </TextField>
-                            : <Typography>Cargando carreras...</Typography>
+                            : null
                     }
                 </Grid>
                 <Grid item xs={6} sm={4}>
