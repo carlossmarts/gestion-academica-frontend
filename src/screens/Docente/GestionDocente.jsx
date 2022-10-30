@@ -4,6 +4,10 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useDocentePresenter } from '../../hooks/DocentePresenter'
 import { UserContext } from '../../context/UserContext';
 import { v4 as uuidv4 } from 'uuid';
+import Loader from '../../components/commons/Loader'
+import TablaMaterias from '../../components/Docente/TablaMaterias'
+
+
 
 
 const GestionDocente = (props) => {
@@ -18,64 +22,57 @@ const GestionDocente = (props) => {
     const [materiaSeleccionada, setMateriaSeleccionada] = useState(0)
     const [materias, setMaterias] = useState([])
     const [inscriptos, setInscriptos] = useState([])
+    const [loading, setLoading] = useState(false)
 
     const { traerMateriasDocente, traerAlumnosYNotas, actualizarNotas } = useDocentePresenter()
 
     useEffect(() => {
+        setLoading(true)
         traerMateriasDocente()
-            .then(res => setMaterias(res))
+            .then((res) => {
+                setLoading(false)
+                setMaterias(res ?? [])
+            })
             .catch(e => console.log(e))
     }, [])
 
     useEffect(() => {
-        traerAlumnosYNotas(materiaSeleccionada, user.idUsuario)
-            .then(res => setInscriptos(res))
-            .catch(e => console.log(e))
+        if (materiaSeleccionada !== 0) {
+            setLoading(true)
+            traerAlumnosYNotas(materiaSeleccionada, user.idUsuario)
+                .then((res) => {
+                    setLoading(false)
+                    setInscriptos(res ?? [])
+                })
+                .catch(e => console.log(e))
+        }
     }, [materiaSeleccionada])
 
-    const renderDetailsButton = (params) => {
-        return (
-            <>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    style={{ marginLeft: 16 }}
-                    onClick={() => {
-                        if (window.confirm('¿Estás seguro de que querés cancelar tu inscripción?')) {
-                            cancelarInscripcion(params.row.idComision).then((res) => { if (res === 204) window.location.reload() })
-                        }
-                    }}
-                >
-                    Cancelar Inscripción
-                </Button>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    style={{ marginLeft: 16 }}
-                    onClick={() => {
-                        if (window.confirm('¿Estás seguro de que querés cancelar tu inscripción?')) {
-                            inscribirse(params.row.idComision).then((res) => { if (res === 204) window.location.reload() })
-                        }
-                    }}
-                >
-                    Incribirse
-                </Button>
-            </>
-        )
-    }
-
-
-    const columnas =
+    const columnasMaterias =
         [
-            { field: "nombre", headerName: <b>Nombre</b>, width: 150 },
-            { field: "apellido", headerName: <b>Apellido</b>, width: 300 },
-            { field: "primerParcial", headerName: <b>Primer Parcial</b>, width: 150 },
-            { field: "segundoparcial", headerName: <b>Segundo Parcial</b>, width: 150 }
+            { field: "nombre", headerName: <b>Nombre</b>, flex: 1 },
+            { field: "carrera", headerName: <b>Carrera</b>, flex: 1 },
+            { field: "turno", headerName: <b>Turno</b>, flex: 1 },
+            { field: "rangoHorario", headerName: <b>Horario</b>, flex: 1 }
+        ]
+
+    const columnasNotas =
+        [
+            { field: "nombre", headerName: <b>Nombre</b>,  flex: 1 },
+            { field: "apellido", headerName: <b>Apellido</b>, flex: 1 },
+            { field: "primerParcial", headerName: <b>Primer Parcial</b>, flex: 1},
+            { field: "segundoparcial", headerName: <b>Segundo Parcial</b>, flex: 1 }
         ]
 
     return (
-
         <>
+            {
+                materias !== undefined && materias.length !== 0 ?
+                    < TablaMaterias materias={materias}/>
+                    :
+                    null
+            }
+
             <Grid item container xs={12} sm={6}>
                 {
                     materias !== undefined ?
@@ -95,28 +92,12 @@ const GestionDocente = (props) => {
                                     </MenuItem>
                                 ))}
                             </TextField>
-                            : < Typography>Cargando materias...</Typography>
+                            : null
                         : null
                 }
             </Grid>
             {
-                materiaSeleccionada !== 0 ?
-                    inscriptos.length !== 0 ?
-                        < Typography>Cargando Inscriptos...</Typography> :
-                        <Grid container justify="center">
-                            <Box style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-                                <Box style={{ height: '450px', width: '600px' }}>
-                                    <DataGrid
-                                        rows={inscriptos}
-                                        columns={columnas}
-                                        pageSize={6}
-                                        getRowId={(row) => uuidv4()}
-                                    />
-                                </Box>
-                            </Box>
-                        </Grid>
-                    :
-                    <></>
+                loading ? <Loader /> : null
             }
         </>
     )

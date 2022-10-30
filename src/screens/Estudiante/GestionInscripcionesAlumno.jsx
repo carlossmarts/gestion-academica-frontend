@@ -9,31 +9,36 @@ import Loader from '../../components/commons/Loader'
 const GestionInscripcionesAlumno = (props) => {
     const { user } = useContext(UserContext)
 
+    const emptyMaterias = {
+        diaHorario: '',
+        docente: '',
+        idComision: '',
+        idDia: '',
+        materia: '',
+        turno: ''
+    }
+
     const [ciclosInscripcion, setCiclosInscripcion] = useState([])
     const [cicloInscripcionSeleccionado, setCicloInscripcionSeleccionado] = useState(0)
-    const [materias, setMaterias] = useState([])
+    const [materias, setMaterias] = useState([emptyMaterias])
     const [materiasInscripto, setMateriasInscripto] = useState([])
     const [loading, setLoading] = useState(false)
+    const [loadingMaterias, setLoadingMaterias] = useState(false)
+    const [loadingInscripcionesPrevias, setLoadingInscripcionesPrevias] = useState(false)
+
 
 
     const { traerTipoInscripciones, traerMateriasPorInscripcionPorCarrera, traerInscripcionesAlumno, altaInscripcionEstudiante, bajaInscripcionEstudiante } = useEstudiantePresenter()
 
     const traerInscripcionesPrevias = () => {
-        traerInscripcionesAlumno()
-            .then(res => setMateriasInscripto(res))
-            .catch(e => console.log(e))
-    }
-
-    const darDeBajaInscripcion = (idComision) => {
-        if (window.confirm('¿Estás seguro de que querés cancelar tu inscripción?')) {
-            const idBajaComision = materiasInscripto.find(e => e.Name === idComision).idDetalleEstudiante
-            bajaInscripcionEstudiante(idBajaComision).then((res) => {
-                if (res === "SUCCESS") {
-                    traerInscripcionesPrevias()
-                    window.alert("Inscripcion cancelada")
-                }
+        setLoadingInscripcionesPrevias(true)
+        traerInscripcionesAlumno(user.idUsuario)
+            .then((res) => {
+                console.log("HELLO " + JSON.stringify(res))
+                setMateriasInscripto(res)
+                setLoadingInscripcionesPrevias(false)
             })
-        }
+            .catch(e => console.log(e))
     }
 
     useEffect(() => {
@@ -48,13 +53,13 @@ const GestionInscripcionesAlumno = (props) => {
     }, [])
 
     useEffect(() => {
-        setLoading(true)
+
         if (cicloInscripcionSeleccionado !== 0) {
+            setLoadingMaterias(true)
             traerMateriasPorInscripcionPorCarrera(cicloInscripcionSeleccionado, user.idCarrera)
                 .then((res) => {
-                    console.log("arms" + JSON.stringify(res))
-                    setLoading(false)
-                    setMaterias(res.materiasIncripcionCarrera ?? [])
+                    setLoadingMaterias(false)
+                    setMaterias(res ?? [])
                 })
                 .catch(e => console.log(e))
         }
@@ -66,21 +71,21 @@ const GestionInscripcionesAlumno = (props) => {
             " test")
     }, [cicloInscripcionSeleccionado])
 
-
     const renderDetailsButton = (params) => {
         return (
             <>{
-                materiasInscripto.find(e => e.idComision === params.row.idComision) ?
+                materiasInscripto && materiasInscripto.find((e) => { return e.materia === params.row.materia && e.estado == "Activo" }) ?
                     <Button
                         variant="text"
                         color="primary"
                         style={{ marginLeft: 16 }}
                         onClick={() => {
                             if (window.confirm('¿Estás seguro de que querés cancelar tu inscripción?')) {
-                                const idBajaComision = materiasInscripto.find(e => e.Name === params.row.idComision).idDetalleEstudiante
+                                setLoading(true)
+                                const idBajaComision = materiasInscripto.find(e => e.materia === params.row.materia).idDetalleInscripcion
                                 bajaInscripcionEstudiante(idBajaComision).then((res) => {
                                     if (res === "SUCCESS") {
-                                        traerInscripcionesPrevias()
+                                        setLoading(false)
                                         window.alert("Inscripcion cancelada")
                                     }
                                 })
@@ -95,15 +100,17 @@ const GestionInscripcionesAlumno = (props) => {
                         color="primary"
                         style={{ marginLeft: 16 }}
                         onClick={() => {
-                            if (window.confirm('Confirmar inscripcion')) {
-                                altaInscripcionEstudiante(params.row.idComision).then((res) => {
-                                    if (res === "SUCCESS") {
-                                        traerInscripcionesPrevias()
-                                        window.alert("Inscripcion realizada")
-                                    }
-                                })
-                            }
-                        }}
+                            setLoading(true)
+                            altaInscripcionEstudiante(user.idUsuario, cicloInscripcionSeleccionado, params.row.idComision).then((res) => {
+                                setLoading(false)
+                                if (res === "SUCCESS") {
+                                    window.alert("Inscripcion confirmada")
+                                } else {
+                                    window.alert("Horarios superpuestos con otra materia, inscripcion cancelada")
+                                }
+                            })
+                        }
+                        }
                     >
                         Solicitar Inscripción
                     </Button>}
@@ -145,7 +152,6 @@ const GestionInscripcionesAlumno = (props) => {
                 }
             </Grid>
             {
-                cicloInscripcionSeleccionado !== 0 && !loading ?
                     materias.length !== 0 ?
                         <Grid container justify="center">
                             <Box p={3} style={{ width: '90%' }}>
@@ -165,11 +171,9 @@ const GestionInscripcionesAlumno = (props) => {
                         </Grid>
                         :
                         < Typography>No existen inscripciones disponibles para la seleccion</Typography>
-                    :
-                    <></>
             }
             {
-                loading ? <Loader /> : null
+                loading || loadingMaterias || loadingInscripcionesPrevias ? <Loader /> : null
             }
         </>
     )

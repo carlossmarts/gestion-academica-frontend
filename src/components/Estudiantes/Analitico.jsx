@@ -25,7 +25,7 @@ const Analitico = () => {
 
     return (
         <>
-            <Button onClick={descargarAnalitico()} variant="contained" color="primary" >
+            <Button onClick={() => {descargarAnalitico()}} variant="contained" color="primary" >
                 Descargar Analitico
             </Button>
         </>

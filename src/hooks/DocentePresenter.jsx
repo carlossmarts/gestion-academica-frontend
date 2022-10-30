@@ -20,7 +20,8 @@ export const useDocentePresenter = () => {
     const traerMateriasDocente = async (idDocente) => {
         try {
             console.log("llamando al servicio traerMateriasDocente");
-            const res = await axios.get(`${baseUrl}/materias?idDocente=${idDocente}`)
+            //const res = await axios.get(`${baseUrl}/materias?idDocente=${idDocente}`)
+            const res = await axios.get(`${baseUrl}/materias?idDocente=15`)
             const ret = await res.data;
             return ret
         } catch (err) {

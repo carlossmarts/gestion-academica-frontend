@@ -14,6 +14,7 @@ import Administracion from './screens/Administrador/Administracion';
 import Reportes from './components/Administrador/Reportes';
 import GestionInscripcionesAlumno from './screens/Estudiante/GestionInscripcionesAlumno';
 import Analitico from './components/Estudiantes/Analitico';
+import GestionDocente from './screens/Docente/GestionDocente';
 import EdicionPerfil from './components/commons/EdicionPerfil';
 
 
@@ -35,6 +36,7 @@ const App = () => {
               <Route exact path={'/reportes'} element={<Reportes />} />
               <Route exact path={'/analitico'} element={<Analitico />} />
               <Route exact path={'/perfil/:id'} element={<EdicionPerfil />} />
+              <Route exact path={'/docente'} element={<GestionDocente />} />
             </Routes>
             </Box>
           </BrowserRouter>

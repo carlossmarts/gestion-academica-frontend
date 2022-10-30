@@ -41,9 +41,9 @@ export const useEstudiantePresenter = () => {
     const traerMateriasPorInscripcionPorCarrera = async (idInscripcion, idCarrera) => {
         try {
             console.log("traer tipos de inscripciones disponibles con idInscripcion "+idInscripcion+" y idCarrera" + idCarrera);
-            const url = `https://gestion-academica-middleware.herokuapp.com/estudiantes/?operacion=traerMateriasPorInscripcionPorCarrera&idInscripcion=4&idCarrera=${idCarrera}`
+            const url = `https://gestion-academica-middleware.herokuapp.com/estudiantes/?operacion=traerMateriasPorInscripcionPorCarrera&idInscripcion=${idInscripcion}&idCarrera=${idCarrera}`
             const res = await axios.get(url);
-            const materias = await res.data
+            const materias = await res.data.return.materiasIncripcionCarrera
             console.log("traerMateriasPorInscripcionPorCarrera response ", JSON.stringify(materias))
             return materias;
         } catch (err) {
@@ -56,18 +56,21 @@ export const useEstudiantePresenter = () => {
             console.log("traer tipos de inscripciones disponibles");
             const url = `https://gestion-academica-middleware.herokuapp.com/estudiantes/?operacion=traerInscripcionesPorEstudiante&idUsuario=${idAlumno}`
             const res = await axios.get(url);
-            const yaInscripto = await res.data.return.materiasInscripcionCarrera;
-            console.log("traerInscripcionesAlumno response ", JSON.stringify(yaInscripto))
+            const yaInscripto = await res.data.return.inscripcionesEstudiante;
+            console.log("traerInscripcionesAlumno response ", JSON.stringify(res))
             return yaInscripto
         } catch (err) {
             console.error(err)
         }
     }
 
-    const altaInscripcionEstudiante = async (dUsuario, idInscripcion, idComision) => {
+    const altaInscripcionEstudiante = async (idUsuario, idInscripcion, idComision) => {
         try {
-            console.log("llamando al servicio altaInscripcionEstudiante con body", dUsuario, idInscripcion, idComision);
-            return "SUCCESS"
+            console.log("llamando al servicio altaInscripcionEstudiante con idUsuario idInscripcion idComision", idUsuario, idInscripcion, idComision);
+            const url = `https://gestion-academica-middleware.herokuapp.com/estudiantes/?operacion=altaInscripcionEstudiante&idUsuario=${idUsuario}&idInscripcion=${idInscripcion}&idComision=${idComision}`
+            const res = await axios.get(url);
+            console.log(JSON.stringify(res))
+            return res.data.return.estado
         } catch (err) {
             console.error(err)
         }
@@ -75,10 +78,12 @@ export const useEstudiantePresenter = () => {
 
     const bajaInscripcionEstudiante = async (idDetalleInscripcion) => {
         try {
-            console.log("llamando al servicio bajaInscripcionEstudiante")
+            console.log("llamando al servicio bajaInscripcionEstudiante con idDetalleInscripcion " + idDetalleInscripcion)
             const url = `https://gestion-academica-middleware.herokuapp.com/estudiantes/?operacion=bajaInscripcionEstudiante&idDetalleInscripcion=${idDetalleInscripcion}`
             const res = await axios.get(url);
-            return "SUCCESS"
+            console.log("??" + JSON.stringify(res.data.return.estado))
+            return res.data.return.estado
+            
         } catch (err) {
             console.error(err)
         }
@@ -97,7 +102,7 @@ export const useEstudiantePresenter = () => {
             //TODO actualizar id
             const url = `https://gestion-academica-middleware.herokuapp.com/reportes/?operacion=traerMateriasAprobadasPorEstudiante&idUsuario=1`
             const res = await axios.get(url);
-            return res.data
+            return res
         } catch (err) {
             console.error(err)
         }

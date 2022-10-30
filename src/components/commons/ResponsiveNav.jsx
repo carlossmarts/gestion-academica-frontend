@@ -83,8 +83,8 @@ const ResponsiveAppBar = (props) => {
                   {
                     user.idTipoUsuario === 2 ? //docente
                     <Grid container justifyContent="flex-start" spacing={1}>
-                      <Button onClick={()=>goTo("/materias")} sx={styles.navItem}>Materias</Button>
-                      <Button onClick={()=>goTo("/notas")} sx={styles.navItem}>Notas</Button>
+                      <Button onClick={()=>goTo("/docente")} sx={styles.navItem}>Materias</Button>
+                      <Button onClick={()=>goTo(`/perfil/${user.idUsuario}`)} sx={styles.navItem}>Perfil</Button>
                     </Grid>
                     : null
                   }
