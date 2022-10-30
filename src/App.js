@@ -12,7 +12,10 @@ import UserProvider from './context/UserContext';
 import Login from './screens/Login'
 import Administracion from './screens/Administrador/Administracion';
 import Reportes from './components/Administrador/Reportes';
-import GestionEstudiante from './screens/Estudiante/GestionEstudiante';
+import GestionInscripcionesAlumno from './screens/Estudiante/GestionInscripcionesAlumno';
+import Analitico from './components/Estudiantes/Analitico';
+import EdicionPerfil from './components/commons/EdicionPerfil';
+
 
 const App = () => {
   const theme = createTheme();
@@ -28,9 +31,10 @@ const App = () => {
               <Route exact path={'/'} element={<Home/>} />
               <Route exact path={'/login'} element={<Login />} />
               <Route exact path={'/administracion'} element={<Administracion />} />
-              <Route exact path={'/gestionestudiante'} element={<GestionEstudiante />} />
-              <Route exact path={'/inscripciones'} element={<GestionEstudiante />} />
+              <Route exact path={'/inscripciones'} element={<GestionInscripcionesAlumno />} />
               <Route exact path={'/reportes'} element={<Reportes />} />
+              <Route exact path={'/analitico'} element={<Analitico />} />
+              <Route exact path={'/perfil/:id'} element={<EdicionPerfil />} />
             </Routes>
             </Box>
           </BrowserRouter>

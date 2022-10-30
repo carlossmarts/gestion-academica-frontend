@@ -1,0 +1,178 @@
+import { Box, Button, Grid, Paper, TextField, Typography, MenuItem } from '@mui/material'
+import { DataGrid } from '@mui/x-data-grid'
+import React, { useState, useEffect, useContext } from 'react';
+import { useEstudiantePresenter } from '../../hooks/EstudiantesPresenter'
+import { UserContext } from '../../context/UserContext';
+import Loader from '../../components/commons/Loader'
+
+
+const GestionInscripcionesAlumno = (props) => {
+    const { user } = useContext(UserContext)
+
+    const [ciclosInscripcion, setCiclosInscripcion] = useState([])
+    const [cicloInscripcionSeleccionado, setCicloInscripcionSeleccionado] = useState(0)
+    const [materias, setMaterias] = useState([])
+    const [materiasInscripto, setMateriasInscripto] = useState([])
+    const [loading, setLoading] = useState(false)
+
+
+    const { traerTipoInscripciones, traerMateriasPorInscripcionPorCarrera, traerInscripcionesAlumno, altaInscripcionEstudiante, bajaInscripcionEstudiante } = useEstudiantePresenter()
+
+    const traerInscripcionesPrevias = () => {
+        traerInscripcionesAlumno()
+            .then(res => setMateriasInscripto(res))
+            .catch(e => console.log(e))
+    }
+
+    const darDeBajaInscripcion = (idComision) => {
+        if (window.confirm('¿Estás seguro de que querés cancelar tu inscripción?')) {
+            const idBajaComision = materiasInscripto.find(e => e.Name === idComision).idDetalleEstudiante
+            bajaInscripcionEstudiante(idBajaComision).then((res) => {
+                if (res === "SUCCESS") {
+                    traerInscripcionesPrevias()
+                    window.alert("Inscripcion cancelada")
+                }
+            })
+        }
+    }
+
+    useEffect(() => {
+        setLoading(true)
+        traerInscripcionesPrevias()
+        traerTipoInscripciones()
+            .then((res) => {
+                setLoading(false)
+                setCiclosInscripcion(res)
+            })
+            .catch(e => console.log(e))
+    }, [])
+
+    useEffect(() => {
+        setLoading(true)
+        if (cicloInscripcionSeleccionado !== 0) {
+            traerMateriasPorInscripcionPorCarrera(cicloInscripcionSeleccionado, user.idCarrera)
+                .then((res) => {
+                    console.log("arms" + JSON.stringify(res))
+                    setLoading(false)
+                    setMaterias(res.materiasIncripcionCarrera ?? [])
+                })
+                .catch(e => console.log(e))
+        }
+    }, [cicloInscripcionSeleccionado])
+
+
+    useEffect(() => {
+        console.log(JSON.stringify(cicloInscripcionSeleccionado) +
+            " test")
+    }, [cicloInscripcionSeleccionado])
+
+
+    const renderDetailsButton = (params) => {
+        return (
+            <>{
+                materiasInscripto.find(e => e.idComision === params.row.idComision) ?
+                    <Button
+                        variant="text"
+                        color="primary"
+                        style={{ marginLeft: 16 }}
+                        onClick={() => {
+                            if (window.confirm('¿Estás seguro de que querés cancelar tu inscripción?')) {
+                                const idBajaComision = materiasInscripto.find(e => e.Name === params.row.idComision).idDetalleEstudiante
+                                bajaInscripcionEstudiante(idBajaComision).then((res) => {
+                                    if (res === "SUCCESS") {
+                                        traerInscripcionesPrevias()
+                                        window.alert("Inscripcion cancelada")
+                                    }
+                                })
+                            }
+                        }}
+                    >
+                        Cancelar Inscripción
+                    </Button>
+                    :
+                    <Button
+                        variant="text"
+                        color="primary"
+                        style={{ marginLeft: 16 }}
+                        onClick={() => {
+                            if (window.confirm('Confirmar inscripcion')) {
+                                altaInscripcionEstudiante(params.row.idComision).then((res) => {
+                                    if (res === "SUCCESS") {
+                                        traerInscripcionesPrevias()
+                                        window.alert("Inscripcion realizada")
+                                    }
+                                })
+                            }
+                        }}
+                    >
+                        Solicitar Inscripción
+                    </Button>}
+            </>
+        )
+    }
+
+    const columns = [
+        { field: "materia", headerName: <strong>Materia</strong>, flex: 1, headerAlign: 'center', align: 'left' },
+        { field: "turno", headerName: <strong>Turno</strong>, flex: 0.5, headerAlign: 'center', align: 'left' },
+        { field: "diaHorario", headerName: <strong>Día/Horario</strong>, flex: 0.75, headerAlign: 'center', align: 'left' },
+        { field: "docente", headerName: <strong>Docentes</strong>, flex: 0.5, headerAlign: 'center', align: 'left' },
+        { field: "acciones", headerName: <strong></strong>, flex: 1, headerAlign: 'center', align: 'center', renderCell: renderDetailsButton }];
+
+    return (
+
+        <>
+            <Grid item container xs={12} sm={6}>
+                {
+                    ciclosInscripcion !== undefined ?
+                        ciclosInscripcion.length !== 0 ?
+                            <TextField
+                                fullWidth
+                                name="idInscripcion"
+                                select
+                                size="small"
+                                label="Inscripcion"
+                                value={cicloInscripcionSeleccionado.idInscripcion}
+                                onChange={(e) => { setCicloInscripcionSeleccionado(e.target.value) }}
+                            >
+                                {ciclosInscripcion.map((option) => (
+                                    <MenuItem key={option.idCarrera} value={option.idInscripcion}>
+                                        {option.descripcion}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+                            : < Typography>Cargando inscripciones...</Typography>
+                        : null
+                }
+            </Grid>
+            {
+                cicloInscripcionSeleccionado !== 0 && !loading ?
+                    materias.length !== 0 ?
+                        <Grid container justify="center">
+                            <Box p={3} style={{ width: '90%' }}>
+                                <Paper m={10}>
+                                    <Box p={2}>
+                                        <DataGrid
+                                            rows={materias}
+                                            columns={columns}
+                                            pageSize={10}
+                                            getRowId={row => row.idComision}
+                                            autoHeight={true}
+                                            disableColumnMenu
+                                        />
+                                    </Box>
+                                </Paper>
+                            </Box>
+                        </Grid>
+                        :
+                        < Typography>No existen inscripciones disponibles para la seleccion</Typography>
+                    :
+                    <></>
+            }
+            {
+                loading ? <Loader /> : null
+            }
+        </>
+    )
+}
+
+export default GestionInscripcionesAlumno
