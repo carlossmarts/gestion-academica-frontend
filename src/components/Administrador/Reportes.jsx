@@ -8,7 +8,9 @@ import UsuarioInhabilitado from '../commons/UsuarioInhabilitado'
 import {styles} from '../../styles/styles'
 import {useUsuarioPresenter} from "../../hooks/UsuarioPresenter";
 import {useAdministracionPresenter} from "../../hooks/AdministracionPresenter";
+import ConsultaCursadasOExamenes from "./ConsultaCursadasOExamenes";
 
+const baseUrl = "https://gestion-academica-middleware.herokuapp.com/reportes/"
 
 const Reportes = () => {
 
@@ -22,11 +24,13 @@ const Reportes = () => {
                 <>
                     <Analitico/>
                     <Box p={2}/>
-                    <EstudiantesXCursada/>
+                    <EstudiantesXCursadaOFinal idInstancia={1}/>
                     <Box p={2}/>
-                    <EstudiantesXFinalMateria/>
+                    <EstudiantesXCursadaOFinal idInstancia={2}/>
                     <Box p={2}/>
-                    <LlamadoFinales/>
+                    <ConsultaCursadasOExamenes idInstancia={1}/>
+                    <Box p={2}/>
+                    <ConsultaCursadasOExamenes idInstancia={2}/>
                 </>
             :
                 <UsuarioInhabilitado tipoUsuario="administrador"/>
@@ -82,7 +86,7 @@ const Analitico = (props) =>{
                 <Grid item >
                         <IconButton onClick={()=>{}} disabled={estudiante=== 0}>
                             <a
-                                href={`https://gestion-academica-middleware.herokuapp.com/reportes/?operacion=traerMateriasAprobadasPorEstudiante&idUsuario=${estudiante}"`}
+                                href={`${baseUrl}?operacion=traerMateriasAprobadasPorEstudiante&idUsuario=${estudiante}"`}
                                 target="_blank"
                             >
                                 <PictureAsPdfIcon style={styles.pdf}/>
@@ -95,8 +99,11 @@ const Analitico = (props) =>{
     )
 }
 
-const EstudiantesXCursada = (props)=>{
+const EstudiantesXCursadaOFinal = (props)=>{
 
+    const {
+        idInstancia //1: cursada, 2:examen final
+    } = props
     const {
         getCarreras,
         defaultCarrera,
@@ -135,7 +142,7 @@ const EstudiantesXCursada = (props)=>{
 
     useEffect(()=>{
         if(materia!== 0 ){
-            getComisionesPorInstanciaYMateria(1,materia)
+            getComisionesPorInstanciaYMateria(idInstancia,materia)
                 .then(data => setComisiones(data))
                 .catch(e => console.log(e))
         } else{
@@ -145,13 +152,9 @@ const EstudiantesXCursada = (props)=>{
     }, [materia])
 
 
-    const download =()=>{
-        alert("TODO- descarga listado de estudiantes por cursada XLS")
-    }
-
     return (
         <Grid container >
-            <Typography style={styles.title}> Descargar listado de estudiantes por cursada</Typography>
+            <Typography style={styles.title}> {`Descargar listado de estudiantes por ${idInstancia === 1 ? "cursada" : "examen final"}`}</Typography>
             <Grid item xs={12} container alignItems="center" spacing={2}>
                 <Grid item>
                     {
@@ -230,80 +233,6 @@ const EstudiantesXCursada = (props)=>{
                         >
                             <img src={excelIcon}/>
                         </a>
-                    </IconButton>
-                </Grid>
-            </Grid>
-
-        </Grid>
-    )
-}
-
-const EstudiantesXFinalMateria = (props)=>{
-
-    const [materia, setMateria] = useState("")
-
-    const downloadXLS =()=>{
-        alert("TODO- descarga listado de estudiantes inscriptos al algun final de materia XLS")
-    }
-
-    const downloadPDF =()=>{
-        alert("TODO- descarga listado de estudiantes inscriptos al algun final de materia PDF")
-    }
-
-    return (
-        <Grid container>
-            <Typography style={styles.title}> Descargar listado de estudiantes inscriptos a finales</Typography>
-            <Grid item xs={12} container alignItems="center" spacing={2}>
-                <Grid item >
-                    <TextField
-                        label="materia"
-                        name="materia"
-                        value={materia}
-                        onChange={(e)=>{setMateria(e.target.value)}}
-                        variant="outlined"
-                        size="small"
-                    />
-                </Grid>
-                
-                <Grid item >
-                    <IconButton onClick={downloadXLS} disabled={materia=== "" }>
-                       <img src={excelIcon} />
-                    </IconButton>
-                    <IconButton onClick={downloadPDF} disabled={materia=== "" }>
-                        <PictureAsPdfIcon style={styles.pdf}/>
-                    </IconButton>
-                </Grid>
-            </Grid>
-
-        </Grid>
-    )
-}
-
-const LlamadoFinales = (props) =>{
-
-    const [llamado, setLlamado] = useState("")
-
-    const download = ()=>{
-        alert("TODO- descarga planilla de materias del llamado a finales PDF")
-    }
-
-    return (
-        <Grid container>
-            <Typography style={styles.title}> Descargar materias por llamado a finales</Typography>
-            <Grid item xs={12} container alignItems="center" spacing={2}>
-                <Grid item >
-                    <TextField
-                        label="Llamado"
-                        name="llamado"
-                        value={llamado}
-                        onChange={(e)=>{setLlamado(e.target.value)}}
-                        variant="outlined"
-                        size="small"
-                    />
-                </Grid>
-                <Grid item >
-                    <IconButton onClick={download} disabled={llamado=== ""}>
-                        <PictureAsPdfIcon style={styles.pdf}/>
                     </IconButton>
                 </Grid>
             </Grid>

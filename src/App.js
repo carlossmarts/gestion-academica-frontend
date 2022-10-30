@@ -9,6 +9,7 @@ import { Box } from '@mui/material';
 import Home from './screens/Home';
 import ResponsiveNav from './components/commons/ResponsiveNav'
 import UserProvider from './context/UserContext';
+import UtilsProvider from "./context/UtilsContext";
 import Login from './screens/Login'
 import Administracion from './screens/Administrador/Administracion';
 import Reportes from './components/Administrador/Reportes';
@@ -18,22 +19,24 @@ const App = () => {
   const theme = createTheme();
 
   return (
-      <UserProvider>
-        <ThemeProvider theme={theme}>
-          <BrowserRouter basename="/">
-            <ResponsiveNav />
-            {/* <TestUseContext/> */}
-            <Box p={4}>
-            <Routes>
-              <Route exact path={'/'} element={<Home/>} />
-              <Route exact path={'/login'} element={<Login />} />
-              <Route exact path={'/administracion'} element={<Administracion />} />
-              <Route exact path={'/reportes'} element={<Reportes />} />
-            </Routes>
-            </Box>
-          </BrowserRouter>
-        </ThemeProvider>
-      </UserProvider>
+      <UtilsProvider>
+        <UserProvider>
+          <ThemeProvider theme={theme}>
+            <BrowserRouter basename="/">
+              <ResponsiveNav />
+              {/* <TestUseContext/> */}
+              <Box p={4}>
+                <Routes>
+                  <Route exact path={'/'} element={<Home/>} />
+                  <Route exact path={'/login'} element={<Login />} />
+                  <Route exact path={'/administracion'} element={<Administracion />} />
+                  <Route exact path={'/reportes'} element={<Reportes />} />
+                </Routes>
+              </Box>
+            </BrowserRouter>
+          </ThemeProvider>
+        </UserProvider>
+      </UtilsProvider>
   );
 }
 

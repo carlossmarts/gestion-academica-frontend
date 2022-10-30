@@ -14,6 +14,7 @@ export const useAdministracionPresenter = () => {
     const defaultInscripcion = { idInscripcion:0, descripcion:"seleccione..."}
     const defaultComision = { idComision:0, comision:"seleccione..."}
 
+
     const getCarreras = async () => {
         try {
             console.log("llamando al servicio getCarreras")
@@ -84,11 +85,13 @@ export const useAdministracionPresenter = () => {
         }
     }
 
-    const getInscripciones = async(idInstancia) =>{
-        const date = getCurrentDate("-")
+    const getInscripciones = async(idInstancia, fecha) =>{
         try {
-            console.log(`llamando al servicio getInscripciones con idInstancia: ${idInstancia} y fecha ${date}`)
-            const url = `${baseUrl}/inscripcion?idInstancia=${idInstancia}&fechaActual=${date}`
+            console.log(`llamando al servicio getInscripciones con idInstancia: ${idInstancia} y fecha ${fecha}`)
+            let url = `${baseUrl}/inscripcion?idInstancia=${idInstancia}`
+            if(fecha !== undefined){
+                url += `&fechaActual=${fecha}`
+            }
             const res = await axios.get(url);
             const status = await res.status
             const data = await res.data;

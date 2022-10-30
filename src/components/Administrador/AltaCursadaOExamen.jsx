@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import {Grid, Box, Button, IconButton, Typography, TextField, MenuItem} from '@mui/material'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -8,6 +8,8 @@ import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import {styles} from '../../styles/styles'
 import { useAdministracionPresenter } from '../../hooks/AdministracionPresenter';
 import { useUsuarioPresenter } from '../../hooks/UsuarioPresenter'
+import {getCurrentDate} from "../../UtilsMethods";
+import {UtilsContext} from "../../context/UtilsContext";
 
 const AltaCursadaOExamen = (props) =>{
 
@@ -15,10 +17,14 @@ const AltaCursadaOExamen = (props) =>{
 		origen
 	} = props
 
-	const {getCarreras, getMateriasByCarrera, getInscripciones, defaultCarrera,defaultMateria, defaultInscripcion} = useAdministracionPresenter()
+	const {
+		getMateriasByCarrera, defaultMateria,
+		getInscripciones, defaultInscripcion
+	} = useAdministracionPresenter()
+
 	const {getDocentesByCarrera, defaultUsuario} = useUsuarioPresenter()
 
-	const [carreras, setCarreras] = useState([defaultCarrera])
+	const {carreras, turnos} = useContext(UtilsContext)
 	const [inscripciones, setInscripciones] = useState([defaultInscripcion]);
 	const [materias, setMaterias] = useState([defaultMateria])
 	const [docentes, setDocentes] = useState([defaultUsuario])
@@ -63,23 +69,12 @@ const AltaCursadaOExamen = (props) =>{
 		{ nro: 6, dia: "sábado"},
 	]
 
-	const turnos = [
-		{ idTurno: 0, nombre: "Seleccione..."},
-		{ idTurno: 1, nombre: "Mañana"},
-		{ idTurno: 2, nombre: "Tarde"},
-		{ idTurno: 3, nombre: "Noche"},
-	]
-
 	useEffect(()=>{
-		getCarreras()
-			.then( res => setCarreras(res))
-			.catch(e=>console.log(e))
-
 		const idInstancia = origen === "cursada" ? 1 : 2
-		getInscripciones(idInstancia)
+		const fecha = getCurrentDate("-")
+		getInscripciones(idInstancia, fecha)
 			.then(res=>setInscripciones(res))
 			.catch(e=>console.log(e))
-
 	}, [])
 
 	useEffect(()=>{
