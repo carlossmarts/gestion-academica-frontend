@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/gestion-academica-frontend/static/css/main.e6c13ad2.css",
-    "main.js": "/gestion-academica-frontend/static/js/main.2229f5fc.js",
+    "main.js": "/gestion-academica-frontend/static/js/main.c0d51136.js",
     "static/js/787.bf26d57d.chunk.js": "/gestion-academica-frontend/static/js/787.bf26d57d.chunk.js",
     "index.html": "/gestion-academica-frontend/index.html",
     "main.e6c13ad2.css.map": "/gestion-academica-frontend/static/css/main.e6c13ad2.css.map",
-    "main.2229f5fc.js.map": "/gestion-academica-frontend/static/js/main.2229f5fc.js.map",
+    "main.c0d51136.js.map": "/gestion-academica-frontend/static/js/main.c0d51136.js.map",
     "787.bf26d57d.chunk.js.map": "/gestion-academica-frontend/static/js/787.bf26d57d.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.e6c13ad2.css",
-    "static/js/main.2229f5fc.js"
+    "static/js/main.c0d51136.js"
   ]
 }
