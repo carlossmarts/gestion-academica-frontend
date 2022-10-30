@@ -4,6 +4,8 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useEstudiantePresenter } from '../../hooks/EstudiantesPresenter'
 import { UserContext } from '../../context/UserContext';
 import Loader from '../../components/commons/Loader'
+import { styles } from '../../styles/styles'
+
 
 
 const GestionInscripcionesAlumno = (props) => {
@@ -128,16 +130,22 @@ const GestionInscripcionesAlumno = (props) => {
     return (
 
         <>
+            <Box mb={4}>
+                <Typography style={styles.title}> Incripciones </Typography>
+            </Box>
+
+            <Box mx={4}> 
             <Grid item container xs={12} sm={6}>
                 {
                     ciclosInscripcion !== undefined ?
                         ciclosInscripcion.length !== 0 ?
+
                             <TextField
                                 fullWidth
                                 name="idInscripcion"
                                 select
                                 size="small"
-                                label="Inscripcion"
+                                label="Seleccionar inscripción"
                                 value={cicloInscripcionSeleccionado.idInscripcion}
                                 onChange={(e) => { setCicloInscripcionSeleccionado(e.target.value) }}
                             >
@@ -149,28 +157,29 @@ const GestionInscripcionesAlumno = (props) => {
                             </TextField>
                             : < Typography>Cargando inscripciones...</Typography>
                         : null
-                }
-            </Grid>
+                }</Grid>
+            </Box>
+
             {
-                    materias.length !== 0 ?
-                        <Grid container justify="center">
-                            <Box p={3} style={{ width: '90%' }}>
-                                <Paper m={10}>
-                                    <Box p={2}>
-                                        <DataGrid
-                                            rows={materias}
-                                            columns={columns}
-                                            pageSize={10}
-                                            getRowId={row => row.idComision}
-                                            autoHeight={true}
-                                            disableColumnMenu
-                                        />
-                                    </Box>
-                                </Paper>
-                            </Box>
-                        </Grid>
-                        :
-                        < Typography>No existen inscripciones disponibles para la seleccion</Typography>
+                materias.length !== 0 ?
+                    <Grid container justify="center">
+                        <Box p={3} style={{ width: '90%' }}>
+                            <Paper m={10}>
+                                <Box p={2}>
+                                    <DataGrid
+                                        rows={materias}
+                                        columns={columns}
+                                        pageSize={10}
+                                        getRowId={row => row.idComision}
+                                        autoHeight={true}
+                                        disableColumnMenu
+                                    />
+                                </Box>
+                            </Paper>
+                        </Box>
+                    </Grid>
+                    :
+                    < Typography>No existen inscripciones disponibles para la seleccion</Typography>
             }
             {
                 loading || loadingMaterias || loadingInscripcionesPrevias ? <Loader /> : null

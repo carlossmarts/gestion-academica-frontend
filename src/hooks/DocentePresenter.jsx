@@ -40,9 +40,20 @@ export const useDocentePresenter = () => {
         }
     }
     
+    const traerInstanciasDeMateria = async (idDocente) => {
+        try {
+            console.log("llamando al servicio traerAlumnosYNotas");
+            const res = await axios.get(`${baseUrl}/alumnos/cursada?idDocente=${idDocente}`)
+            const ret = await res.data;
+            return ret
+        } catch (err) {
+            console.error(err)
+        }
+    }
 
     return {
         traerMateriasDocente,
+        traerInstanciasDeMateria,
         traerAlumnosYNotas,
         actualizarNotas
     }

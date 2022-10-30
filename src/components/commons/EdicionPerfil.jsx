@@ -114,122 +114,126 @@ const EdicionPerfil = () => {
 
   return (
     <>
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <Typography style={styles.title}> Actualizar Usuario </Typography>
-        </Grid>
-        <Grid item xs={6} sm={4}>
-          <TextField
-            disabled={bloqueado}
-            fullWidth
-            size="small"
-            name="nombre"
-            label="Nombre"
-            variant="outlined"
-            value={estudiante.nombre}
-            onChange={handleChange}
-            error={error.nombre !== "" ? true : false}
-            helperText={error.nombre}
-          />
-        </Grid>
-        <Grid item xs={6} sm={4}>
-          <TextField
-          disabled={bloqueado}
-            fullWidth
-            size="small"
-            name="apellido"
-            label="Apellido"
-            variant="outlined"
-            value={estudiante.apellido}
-            onChange={handleChange}
-            error={error.apellido !== "" ? true : false}
-            helperText={error.apellido}
-          />
-        </Grid>
-        <Grid item xs={6} sm={4}>
-          <TextField
-          disabled={bloqueado}
-            fullWidth
-            size="small"
-            name="dni"
-            label="DNI"
-            variant="outlined"
-            value={estudiante.dni}
-            onChange={handleChange}
-            error={error.dni !== "" ? true : false}
-            helperText={error.dni}
-          />
-        </Grid>
-        <Grid item xs={6} sm={4}>
-          <TextField
-            fullWidth
-            size="small"
-            name="correo"
-            label="Email"
-            variant="outlined"
-            value={estudiante.correo}
-            onChange={handleChange}
-            error={error.correo !== "" ? true : false}
-            helperText={error.correo}
-          />
-        </Grid>
-        <Grid item xs={6} sm={4}>
-          <TextField
-            fullWidth
-            size="small"
-            name="celular"
-            label="Celular"
-            variant="outlined"
-            value={estudiante.celular}
-            onChange={handleChange}
-            error={error.celular !== "" ? true : false}
-            helperText={error.celular}
-          />
-        </Grid>
-        <Grid item xs={6} sm={4}>
-          <TextField
-          disabled={bloqueado}
-            fullWidth
-            size="small"
-            name="username"
-            label="Usuario"
-            variant="outlined"
-            value={estudiante.username}
-            onChange={handleChange}
-          />
-        </Grid>
-        <Grid item xs={6} sm={4}>
-          <TextField
-            fullWidth
-            size="small"
-            name="clave"
-            label="Contraseña"
-            variant="outlined"
-            type={visible ? "text" : "password"}
-            value={estudiante.clave}
-            onChange={handleChange}
-            InputProps={{
-              endAdornment: (
-                <IconButton onClick={() => { setVisible(!visible) }}>
-                  {
-                    visible
-                      ?
-                      <VisibilityIcon />
-                      :
-                      <VisibilityOffIcon />
-                  }
-                </IconButton>
-              )
-            }}
-          />
-        </Grid>
+      <Box mb={3}>
+        <Typography style={styles.title}>Perfil </Typography>
+      </Box>
 
-        <Grid item xs={12}>
-          <Button onClick={validarYEnviar} variant="contained" color="primary">
-            Aceptar
-          </Button>
+      <Box mx={2}>
+        <Grid container spacing={2}>
+          <Grid item xs={6} sm={4}>
+            <TextField
+              disabled={bloqueado}
+              fullWidth
+              size="small"
+              name="nombre"
+              label="Nombre"
+              variant="outlined"
+              value={estudiante.nombre}
+              onChange={handleChange}
+              error={error.nombre !== "" ? true : false}
+              helperText={error.nombre}
+            />
+          </Grid>
+
+          <Grid item xs={6} sm={4}>
+            <TextField
+              disabled={bloqueado}
+              fullWidth
+              size="small"
+              name="apellido"
+              label="Apellido"
+              variant="outlined"
+              value={estudiante.apellido}
+              onChange={handleChange}
+              error={error.apellido !== "" ? true : false}
+              helperText={error.apellido}
+            />
+          </Grid>
+          <Grid item xs={6} sm={4}>
+            <TextField
+              disabled={bloqueado}
+              fullWidth
+              size="small"
+              name="dni"
+              label="DNI"
+              variant="outlined"
+              value={estudiante.dni}
+              onChange={handleChange}
+              error={error.dni !== "" ? true : false}
+              helperText={error.dni}
+            />
+          </Grid>
+          <Grid item xs={6} sm={4}>
+            <TextField
+              fullWidth
+              size="small"
+              name="correo"
+              label="Email"
+              variant="outlined"
+              value={estudiante.correo}
+              onChange={handleChange}
+              error={error.correo !== "" ? true : false}
+              helperText={error.correo}
+            />
+          </Grid>
+          <Grid item xs={6} sm={4}>
+            <TextField
+              fullWidth
+              size="small"
+              name="celular"
+              label="Celular"
+              variant="outlined"
+              value={estudiante.celular}
+              onChange={handleChange}
+              error={error.celular !== "" ? true : false}
+              helperText={error.celular}
+            />
+          </Grid>
+          <Grid item xs={6} sm={4}>
+            <TextField
+              disabled={bloqueado}
+              fullWidth
+              size="small"
+              name="username"
+              label="Usuario"
+              variant="outlined"
+              value={estudiante.username}
+              onChange={handleChange}
+            />
+          </Grid>
+          <Grid item xs={6} sm={4}>
+            <TextField
+              fullWidth
+              size="small"
+              name="clave"
+              label="Contraseña"
+              variant="outlined"
+              type={visible ? "text" : "password"}
+              value={estudiante.clave}
+              onChange={handleChange}
+              InputProps={{
+                endAdornment: (
+                  <IconButton onClick={() => { setVisible(!visible) }}>
+                    {
+                      visible
+                        ?
+                        <VisibilityIcon />
+                        :
+                        <VisibilityOffIcon />
+                    }
+                  </IconButton>
+                )
+              }}
+            />
+          </Grid>
+
+          <Grid item xs={12}>
+            <Button onClick={validarYEnviar} variant="contained" color="primary">
+              Aceptar
+            </Button>
+          </Grid>
         </Grid>
-      </Grid>
+      </Box>
       <Box display="flex" justifyContent="center">
         {
           alertMsg ?

@@ -17,13 +17,16 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.1.2",
     "dayjs": "^1.11.5",
+    "file-saver": "^2.0.5",
     "gh-pages": "^4.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router": "^6.3.0",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4"
+    "sheetjs-style": "^0.15.8",
+    "web-vitals": "^2.1.4",
+    "xlsx": "^0.18.5"
   },
   "scripts": {
     "predeploy": "npm run build",
