@@ -68,6 +68,7 @@ const ResponsiveAppBar = (props) => {
                     <Grid container justifyContent="flex-start" spacing={1}>
                       <Button onClick={()=>goTo("/administracion")} sx={styles.navItem}>Administracion</Button>
                       <Button onClick={()=>goTo("/reportes")} sx={styles.navItem}>Reportes</Button>
+                      <Button onClick={()=>goTo(`/perfil/${user.idUsuario}`)} sx={styles.navItem}>Perfil</Button>
                     </Grid>
                     : null
                   }
@@ -83,7 +84,8 @@ const ResponsiveAppBar = (props) => {
                   {
                     user.idTipoUsuario === 2 ? //docente
                     <Grid container justifyContent="flex-start" spacing={1}>
-                      <Button onClick={()=>goTo("/docente")} sx={styles.navItem}>Materias</Button>
+                      <Button onClick={()=>goTo("/materiasasignadas")} sx={styles.navItem}>Materias</Button>
+                      <Button onClick={()=>goTo("/docente")} sx={styles.navItem}>Notas y Gestion</Button>
                       <Button onClick={()=>goTo(`/perfil/${user.idUsuario}`)} sx={styles.navItem}>Perfil</Button>
                     </Grid>
                     : null
