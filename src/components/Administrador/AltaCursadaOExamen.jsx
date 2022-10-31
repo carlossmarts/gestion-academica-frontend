@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import {Grid, Box, Button, IconButton, Typography, TextField, MenuItem} from '@mui/material'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -8,6 +8,8 @@ import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import {styles} from '../../styles/styles'
 import { useAdministracionPresenter } from '../../hooks/AdministracionPresenter';
 import { useUsuarioPresenter } from '../../hooks/UsuarioPresenter'
+import {getCurrentDate} from "../../UtilsMethods";
+import {UtilsContext} from "../../context/UtilsContext";
 
 const AltaCursadaOExamen = (props) =>{
 
@@ -15,13 +17,17 @@ const AltaCursadaOExamen = (props) =>{
 		origen
 	} = props
 
-	const {getCarreras, getMateriasByCarrera, getInscripciones} = useAdministracionPresenter()
-	const {getDocentesByCarrera} = useUsuarioPresenter()
+	const {
+		getMateriasByCarrera, defaultMateria,
+		getInscripciones, defaultInscripcion
+	} = useAdministracionPresenter()
 
-	const [carreras, setCarreras] = useState([])
-	const [inscripciones, setInscripciones] = useState([]);
-	const [materias, setMaterias] = useState([])
-	const [docentes, setDocentes] = useState([])
+	const {getDocentesByCarrera, defaultUsuario} = useUsuarioPresenter()
+
+	const {carreras, turnos} = useContext(UtilsContext)
+	const [inscripciones, setInscripciones] = useState([defaultInscripcion]);
+	const [materias, setMaterias] = useState([defaultMateria])
+	const [docentes, setDocentes] = useState([defaultUsuario])
 	const [carrera, setCarrera] = useState(0)
 
 	const [disabled, setDisabled] = useState(true)
@@ -63,39 +69,32 @@ const AltaCursadaOExamen = (props) =>{
 		{ nro: 6, dia: "sábado"},
 	]
 
-	const turnos = [
-		{ idTurno: 0, nombre: "Seleccione..."},
-		{ idTurno: 1, nombre: "Mañana"},
-		{ idTurno: 2, nombre: "Tarde"},
-		{ idTurno: 3, nombre: "Noche"},
-	]
-
 	useEffect(()=>{
-		getCarreras()
-			.then( res => setCarreras(res))
-			.catch(e=>console.log(e))
-
-		//TODO descomentar
-		getInscripciones()
+		const idInstancia = origen === "cursada" ? 1 : 2
+		const fecha = getCurrentDate("-")
+		getInscripciones(idInstancia, fecha)
 			.then(res=>setInscripciones(res))
 			.catch(e=>console.log(e))
-
 	}, [])
 
 	useEffect(()=>{
-		getDocentesByCarrera(carrera)
-			.then( res => setDocentes(res))
-			.catch(e=>console.log(e))
+		if(carrera !== 0 ){
+			getDocentesByCarrera(carrera)
+				.then( res => setDocentes(res))
+				.catch(e=>console.log(e))
 
-		getMateriasByCarrera(carrera)
-			.then( res => setMaterias(res))
-			.catch(e=>console.log(e))
-
+			getMateriasByCarrera(carrera)
+				.then( res => setMaterias(res))
+				.catch(e=>console.log(e))
+			setIdMateria(0)
+			setIdDocente(0)
+		} else {
+			setDocentes([defaultUsuario])
+			setMaterias([defaultMateria])
+		}
 	}, [carrera])
 
-	useEffect(()=>{
-		console.log(error)
-	}, [error])
+
 
 	const validar  = ()=>{
 		let retorno = true
@@ -189,52 +188,45 @@ const AltaCursadaOExamen = (props) =>{
 			</Grid>
 			<Grid item container xs={12} sm={6}>
 				{
-					carreras !== undefined ?
-						carreras.length !== 0 ?
-							<TextField
-								fullWidth
-								name="idCarrera"
-								select
-								size="small"
-								label="Carrera"
-								value={carrera}
-								onChange={(e)=>{setCarrera(e.target.value)}}
-							>
-								{carreras.map((option) => (
-									<MenuItem key={option.idCarrera} value={option.idCarrera}>
-										{option.nombre}
-									</MenuItem>
-								))}
-							</TextField>
-							: <Typography>Cargando carreras...</Typography>
-						: null
+					carreras ?
+						<TextField
+							fullWidth
+							name="idCarrera"
+							select
+							size="small"
+							label="Carrera"
+							value={carrera}
+							onChange={(e)=>{setCarrera(e.target.value)}}
+						>
+							{carreras.map((option) => (
+								<MenuItem key={option.idCarrera} value={option.idCarrera}>
+									{option.nombre}
+								</MenuItem>
+							))}
+						</TextField>
+					: null
 				}
 			</Grid>
 			<Grid item container xs={12} sm={6}>
 				{
-					carreras !== undefined ?
-						carreras.length !== 0 ?
-							<TextField
-								fullWidth
-								name="idCarrera"
-								select
-								size="small"
-								label="Ventana de inscripción"
-								value={idInscripcion}
-								onChange={(e)=>{setIdInscripcion(e.target.value)}}
-							>
-								<MenuItem key={0} value={0}>
-									Seleccione...
-								</MenuItem>
-								<MenuItem key={1} value={1}>
-									Cursada segundo cuatrimestre 2022
-								</MenuItem>
-								<MenuItem key={2} value={2}>
-									segundo llamado a examenes finales 2022
-								</MenuItem>
-							</TextField>
-							: <Typography>Cargando ventanas de inscripcion...</Typography>
-						: null
+					inscripciones ?
+						<TextField
+							fullWidth
+							select
+							size="small"
+							label="Ventana de inscripción"
+							value={idInscripcion}
+							onChange={(e)=>{setIdInscripcion(e.target.value)}}
+						>
+							{
+								inscripciones.map(option =>(
+									<MenuItem key={option.idInscripcion} value={option.idInscripcion}>
+										{option.descripcion}
+									</MenuItem>
+								))
+							}
+						</TextField>
+					: null
 				}
 			</Grid>
 			{
@@ -242,48 +234,44 @@ const AltaCursadaOExamen = (props) =>{
 					<Grid item xs={12} container alignItems="center" spacing={1}>
 						<Grid item xs={6} md={3}>
 							{
-								materias !== undefined ?
-									materias.length !== 0 ?
-										<TextField
-											fullWidth
-											select
-											size="small"
-											label="Materia"
-											value={idMateria}
-											onChange={(e)=>{setIdMateria(e.target.value)}}
-											error={error.idMateria}
-										>
-											{materias.map((option) => (
-												<MenuItem key={option.idMateria} value={option.idMateria}>
-													{option.nombre}
-												</MenuItem>
-											))}
-										</TextField>
-										: <Typography>Cargando materias...</Typography>
-									: <Typography>Cargando materias...</Typography>
+								materias ?
+									<TextField
+										fullWidth
+										select
+										size="small"
+										label="Materia"
+										value={idMateria}
+										onChange={(e)=>{setIdMateria(e.target.value)}}
+										error={error.idMateria}
+									>
+										{materias.map((option) => (
+											<MenuItem key={option.idMateria} value={option.idMateria}>
+												{option.nombre}
+											</MenuItem>
+										))}
+									</TextField>
+								: null
 							}
 						</Grid>
 						<Grid item xs={6} md={3}>
 							{
-								docentes !== undefined ?
-									docentes.length !== 0 ?
-										<TextField
-											fullWidth
-											select
-											size="small"
-											label="Docente"
-											value={idDocente}
-											onChange={(e)=>{setIdDocente(e.target.value)}}
-											error={error.idDocente}
-										>
-											{docentes.map((option) => (
-												<MenuItem key={option.idUsuario} value={option.idUsuario}>
-													{`${option.apellido} ${option.nombre}`}
-												</MenuItem>
-											))}
-										</TextField>
-										: <Typography>Cargando docentes...</Typography>
-									: null
+								docentes?
+									<TextField
+										fullWidth
+										select
+										size="small"
+										label="Docente"
+										value={idDocente}
+										onChange={(e)=>{setIdDocente(e.target.value)}}
+										error={error.idDocente}
+									>
+										{docentes.map((option) => (
+											<MenuItem key={option.idUsuario} value={option.idUsuario}>
+												{`${option.apellido} ${option.nombre}`}
+											</MenuItem>
+										))}
+									</TextField>
+								: null
 							}
 						</Grid>
 						<Grid item xs={6} md={3} container justifyContent="flex-start">

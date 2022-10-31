@@ -6,6 +6,14 @@ import {getCurrentDate} from "../UtilsMethods";
 export const useAdministracionPresenter = () => {
 
     const baseUrl = "https://gestion-academica-api.herokuapp.com/api/administracion"
+    const baseUrlRep = "https://gestion-academica-middleware.herokuapp.com/reportes"
+
+    const defaultCarrera = {idCarrera:0, nombre:"seleccione..."}
+    const defaultTurno = {idTurno:0, nombre:"seleccione..."}
+    const defaultMateria = {idMateria:0, nombre:"seleccione..."}
+    const defaultInscripcion = { idInscripcion:0, descripcion:"seleccione..."}
+    const defaultComision = { idComision:0, comision:"seleccione..."}
+
 
     const getCarreras = async () => {
         try {
@@ -13,7 +21,7 @@ export const useAdministracionPresenter = () => {
             const url = `${baseUrl}/carreras`
             const res = await axios.get(url);
             const carreras = await res.data;
-            carreras.unshift({idCarrera:0, nombre:"seleccione..."})
+            carreras.unshift(defaultCarrera)
             console.log( "getCarreras response ", carreras)
             return carreras;
         } catch (err) {
@@ -27,7 +35,7 @@ export const useAdministracionPresenter = () => {
             const url = `${baseUrl}/turnos`
             const res = await axios.get(url);
             const turnos = await res.data;
-            turnos.unshift({idTurno:0, nombre:"seleccione..."})
+            turnos.unshift(defaultTurno)
             console.log( "getTurnos response ", turnos)
             return turnos;
         } catch (err) {
@@ -41,9 +49,25 @@ export const useAdministracionPresenter = () => {
             const url = `${baseUrl}/materias/${idCarrera}`
             const res = await axios.get(url);
             const materias = await res.data;
-            materias.unshift({ idMateria:0, nombre:"seleccione..."})
+            materias.unshift(defaultMateria)
             console.log( "getMateriasByCarreraresponse ", materias)
             return materias;
+        } catch (err) {
+            console.error(err)
+        }
+    }
+
+    const getComisionesPorInstanciaYMateria = async(idInstancia, idMateria)=>{
+        try {
+            console.log("llamando al servicio getComisionesPorInstanciaYMateria con instancia" + idInstancia + " y materia: " + idMateria)
+            const url = `${baseUrlRep}/?operacion=traerComisionesPorInstanciaYMateria&idInstancia=${idInstancia}&idMateria=${idMateria}`
+            const res = await axios.get(url);
+            const ret = await res.data.return;
+            const dataComisiones = ret.comisiones !== undefined ? ret.comisiones : []
+            let comisiones = Array.isArray(dataComisiones) ? dataComisiones : [dataComisiones]
+            comisiones.unshift(defaultComision)
+            console.log( "getComisionesPorInstanciaYMateria", comisiones)
+            return comisiones;
         } catch (err) {
             console.error(err)
         }
@@ -61,14 +85,18 @@ export const useAdministracionPresenter = () => {
         }
     }
 
-    const getInscripciones = async(idInstancia) =>{
-        const date = getCurrentDate("-")
+    const getInscripciones = async(idInstancia, fecha) =>{
         try {
-            console.log("llamando al servicio getInscripciones")
-            const url = `${baseUrl}/inscripciones/$idInstancia=${idInstancia}&fecha=${date}`
+            console.log(`llamando al servicio getInscripciones con idInstancia: ${idInstancia} y fecha ${fecha}`)
+            let url = `${baseUrl}/inscripcion?idInstancia=${idInstancia}`
+            if(fecha !== undefined){
+                url += `&fechaActual=${fecha}`
+            }
             const res = await axios.get(url);
-            const inscripciones = await res.data;
-            inscripciones.unshift({ idInscripcion:0, nombre:"seleccione..."})
+            const status = await res.status
+            const data = await res.data;
+            const inscripciones = status === 200 ? data : []
+            inscripciones.unshift(defaultInscripcion)
             console.log( "getInscripciones response ", inscripciones)
             return inscripciones;
         } catch (err) {
@@ -77,10 +105,16 @@ export const useAdministracionPresenter = () => {
     }
 
     return {
+        defaultCarrera,
+        defaultTurno,
+        defaultMateria,
+        defaultInscripcion,
+        defaultComision,
         getCarreras, 
         getTurnos, 
         getMateriasByCarrera,
         getInscripciones,
-        saveInscripcion
+        saveInscripcion,
+        getComisionesPorInstanciaYMateria
     }
 }

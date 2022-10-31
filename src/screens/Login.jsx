@@ -114,6 +114,10 @@ const Login = () => {
         }
         return retorno;
     }
+    const onPressEnter = (e)=>{
+        if(e.charCode === 13)
+            validarYEnviar()
+    }
 
     return (
         <Container maxWidth="sm" >
@@ -124,7 +128,7 @@ const Login = () => {
                 setLoading={setLoading}
                 irAHome={irAHome}
             />
-            <Box display="flex" justifyContent="center" m={8} >
+            <Box display="flex" justifyContent="center" m={8} onKeyPress={onPressEnter}>
                 <Paper>
                     <Grid container spacing={2}>
                         <Grid container item justifyContent="center" >
