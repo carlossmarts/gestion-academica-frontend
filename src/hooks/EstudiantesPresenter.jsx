@@ -89,31 +89,11 @@ export const useEstudiantePresenter = () => {
         }
     }
 
-    const traerAnalitico = async (idEstudiante) => {
-        try {
-            const config = {
-                headers: {
-                    'responseType': 'blob',
-                    'Content-Type': 'application/octet-stream; charset=utf-8',
-                    'Content-Disposition': "attachment;filename=coso.pdf"
-                }
-            }
-            console.log("traer analitico");
-            //TODO actualizar id
-            const url = `https://gestion-academica-middleware.herokuapp.com/reportes/?operacion=traerMateriasAprobadasPorEstudiante&idUsuario=1`
-            const res = await axios.get(url);
-            return res
-        } catch (err) {
-            console.error(err)
-        }
-    }
-
     return {
         traerTipoInscripciones,
         traerMateriasPorInscripcionPorCarrera,
         traerInscripcionesAlumno,
         altaInscripcionEstudiante,
-        bajaInscripcionEstudiante,
-        traerAnalitico
+        bajaInscripcionEstudiante
     }
 }
