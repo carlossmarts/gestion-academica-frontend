@@ -5,7 +5,8 @@ import React from 'react';
 const TablaFinal= (props) => {
 
     const {
-        inscriptos
+        inscriptos,
+        actualizarNotaEnTabla
     } = props
 
     const columnasNotas =
@@ -32,6 +33,7 @@ const TablaFinal= (props) => {
                                         getRowId={row => row.dni}
                                         autoHeight={true}
                                         disableColumnMenu
+                                        onCellEditCommit={actualizarNotaEnTabla}
                                     />
                                 </Box>
                             </Paper>

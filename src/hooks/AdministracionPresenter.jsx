@@ -77,7 +77,7 @@ export const useAdministracionPresenter = () => {
         try {
             console.log("llamando al servicio saveInscripcion - body", body)
             const url = `${baseUrl}/inscripcion`
-            const res = await axios.get(url, body);
+            const res = await axios.post(url, body);
             const data = await res.data;
             console.log( "saveInscripcion response ", data)
         } catch (err) {

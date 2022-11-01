@@ -36,8 +36,7 @@ const GestionInscripcionesAlumno = (props) => {
         setLoadingInscripcionesPrevias(true)
         traerInscripcionesAlumno(user.idUsuario)
             .then((res) => {
-                console.log("HELLO " + JSON.stringify(res))
-                setMateriasInscripto(res)
+                Array.isArray(res) ? setMateriasInscripto(res) : setMateriasInscripto([res])
                 setLoadingInscripcionesPrevias(false)
             })
             .catch(e => console.log(e))
@@ -65,12 +64,6 @@ const GestionInscripcionesAlumno = (props) => {
                 })
                 .catch(e => console.log(e))
         }
-    }, [cicloInscripcionSeleccionado])
-
-
-    useEffect(() => {
-        console.log(JSON.stringify(cicloInscripcionSeleccionado) +
-            " test")
     }, [cicloInscripcionSeleccionado])
 
     const renderDetailsButton = (params) => {
@@ -134,30 +127,30 @@ const GestionInscripcionesAlumno = (props) => {
                 <Typography style={styles.title}> Incripciones </Typography>
             </Box>
 
-            <Box mx={4}> 
-            <Grid item container xs={12} sm={6}>
-                {
-                    ciclosInscripcion !== undefined ?
-                        ciclosInscripcion.length !== 0 ?
+            <Box mx={4}>
+                <Grid item container xs={12} sm={6}>
+                    {
+                        ciclosInscripcion !== undefined ?
+                            ciclosInscripcion.length !== 0 ?
 
-                            <TextField
-                                fullWidth
-                                name="idInscripcion"
-                                select
-                                size="small"
-                                label="Seleccionar inscripción"
-                                value={cicloInscripcionSeleccionado.idInscripcion}
-                                onChange={(e) => { setCicloInscripcionSeleccionado(e.target.value) }}
-                            >
-                                {ciclosInscripcion.map((option) => (
-                                    <MenuItem key={option.idCarrera} value={option.idInscripcion}>
-                                        {option.descripcion}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
-                            : < Typography>Cargando inscripciones...</Typography>
-                        : null
-                }</Grid>
+                                <TextField
+                                    fullWidth
+                                    name="idInscripcion"
+                                    select
+                                    size="small"
+                                    label="Seleccionar inscripción"
+                                    value={cicloInscripcionSeleccionado.idInscripcion}
+                                    onChange={(e) => { setCicloInscripcionSeleccionado(e.target.value) }}
+                                >
+                                    {ciclosInscripcion.map((option) => (
+                                        <MenuItem key={option.idCarrera} value={option.idInscripcion}>
+                                            {option.descripcion}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                                : < Typography>Cargando inscripciones...</Typography>
+                            : null
+                    }</Grid>
             </Box>
 
             {
