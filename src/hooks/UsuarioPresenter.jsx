@@ -19,7 +19,19 @@ export const useUsuarioPresenter = () => {
             console.error(err)
         }
     }
-
+    
+    const traerUsuarioPorId = async (idUsuario) => {
+        try {
+            console.log("llamando al servicio traerUsuarioPorId con id ", idUsuario);
+            const url = `${baseUrl}/${idUsuario}`
+            const res = await axios.get(url);
+            const user = await res.data;
+            console.log( "traer IdUsuario res ", user)
+            return user;
+        } catch (err) {
+            console.error(err)
+        }
+    }
     const altaUsuario = async (body) => {
         try {
             console.log("llamando al servicio altaUsuario con body", body);
@@ -75,6 +87,7 @@ export const useUsuarioPresenter = () => {
     return {
         defaultUsuario,
         traerIdUsuario,
+        traerUsuarioPorId,
         altaUsuario,
         modificarUsuario,
         getDocentesByCarrera,

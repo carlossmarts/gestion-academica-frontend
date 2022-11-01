@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import {Grid, Box} from "@mui/material";
 import MenuLateral from "../../components/Administrador/MenuLateral";
 import AltaUsuarios from '../../components/Administrador/AltaUsuarios';
@@ -9,6 +9,11 @@ import GestionInscripciones from '../../components/Administrador/GestionInscripc
 const Administracion = () => {
 
     const [selected, setSelected] = useState("")
+    useEffect(() => {
+        console.log(selected +
+            " seleccionado")
+    }, [selected])
+
 
     return (
 

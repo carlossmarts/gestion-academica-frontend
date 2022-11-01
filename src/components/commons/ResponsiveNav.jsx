@@ -12,23 +12,25 @@ import { Grid } from '@mui/material';
 
 const ResponsiveAppBar = (props) => {
 
-  const{
+  const {
     usuario,
     setUsuario
   } = props
- 
+
   const history = useNavigate();
   const irAHome = () => { history("/") }
+  const reporteUrl = "https://gestion-academica-middleware.herokuapp.com/reportes"
 
-  const {user, setUser, refreshUser} = useContext(UserContext)
+
+  const { user, setUser, refreshUser } = useContext(UserContext)
 
   const cerrarSesion = () => {
     refreshUser()
     goTo("/")
   }
 
-  const goTo = (path)=>{
-        history(path)
+  const goTo = (path) => {
+    history(path)
   }
 
   return (
@@ -59,39 +61,43 @@ const ResponsiveAppBar = (props) => {
               user.idUsuario === 0
                 ?
                 <Grid container justifyContent="flex-end">
-                  <Button onClick={()=>goTo("/login")} sx={styles.navItem}>Ingresar</Button>
+                  <Button onClick={() => goTo("/login")} sx={styles.navItem}>Ingresar</Button>
                 </Grid>
                 :
                 <>
                   {
                     user.idTipoUsuario === 3 ?  //administrador
-                    <Grid container justifyContent="flex-start" spacing={1}>
-                      <Button onClick={()=>goTo("/administracion")} sx={styles.navItem}>Administracion</Button>
-                      <Button onClick={()=>goTo("/reportes")} sx={styles.navItem}>Reportes</Button>
-                    </Grid>
-                    : null
+                      <Grid container justifyContent="flex-start" spacing={1}>
+                        <Button onClick={() => goTo("/administracion")} sx={styles.navItem}>Administracion</Button>
+                        <Button onClick={() => goTo("/reportes")} sx={styles.navItem}>Reportes</Button>
+                        <Button onClick={() => goTo(`/perfil/${user.idUsuario}`)} sx={styles.navItem}>Perfil</Button>
+                      </Grid>
+                      : null
                   }
                   {
                     user.idTipoUsuario === 1 ? //estudiante
-                    <Grid container justifyContent="flex-start" spacing={1}>
-                      <Button onClick={()=>goTo("/inscripciones")} sx={styles.navItem}>Inscripciones</Button>
-                      <Button onClick={()=>goTo("/analitico")} sx={styles.navItem}>Analitico</Button>
-                      <Button onClick={()=>goTo("/misDatos")} sx={styles.navItem}>misDatos</Button>
-                    </Grid>
-                    : null
+                      <Grid container justifyContent="flex-start" spacing={1}>
+                        <Button onClick={() => goTo("/inscripciones")} sx={styles.navItem}>Inscripciones</Button>
+                        <a href={`${reporteUrl}/?operacion=traerMateriasAprobadasPorEstudiante&idUsuario=${user.idUsuario}`} style={{'text-decoration': 'none'}} target="_blank">
+                          <Button onClick={() => goTo("/analitico")} sx={styles.navItem}>Analitico</Button>
+                        </a>
+                        <Button onClick={() => goTo(`/perfil/${user.idUsuario}`)} sx={styles.navItem}>Perfil</Button>
+                      </Grid>
+                      : null
                   }
                   {
                     user.idTipoUsuario === 2 ? //docente
-                    <Grid container justifyContent="flex-start" spacing={1}>
-                      <Button onClick={()=>goTo("/materias")} sx={styles.navItem}>Materias</Button>
-                      <Button onClick={()=>goTo("/notas")} sx={styles.navItem}>Notas</Button>
-                    </Grid>
-                    : null
+                      <Grid container justifyContent="flex-start" spacing={1}>
+                        <Button onClick={() => goTo("/materiasasignadas")} sx={styles.navItem}>Materias</Button>
+                        <Button onClick={() => goTo("/docente")} sx={styles.navItem}>Notas y Gestion</Button>
+                        <Button onClick={() => goTo(`/perfil/${user.idUsuario}`)} sx={styles.navItem}>Perfil</Button>
+                      </Grid>
+                      : null
                   }
                   <Grid container justifyContent="flex-end">
                     <Button onClick={cerrarSesion} sx={styles.cerrarSesion}>Cerrar Sesion</Button>
                   </Grid>
-                    
+
                 </>
             }
           </Box>
@@ -106,7 +112,7 @@ export default ResponsiveAppBar;
 
 
 const styles = {
-  navItem: { color: 'white', display: 'block', pt:2},
-  cerrarSesion: { color: 'white', display: 'block'},
+  navItem: { color: 'white', display: 'block', pt: 2 },
+  cerrarSesion: { color: 'white', display: 'block' },
 
 }
