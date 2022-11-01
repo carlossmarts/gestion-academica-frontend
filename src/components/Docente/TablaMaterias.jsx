@@ -1,6 +1,6 @@
 import { Box, Grid, Paper, Typography } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid';
-import React from 'react';
+import React, {useEffect} from 'react';
 
 const TablaMaterias = (props) => {
 
@@ -11,10 +11,16 @@ const TablaMaterias = (props) => {
     const columnasMaterias =
         [
             { field: "nombre", headerName: <b>Nombre</b>, flex: 1 },
+            { field: "nroComision", headerName: <b>Comisión</b>, flex: 0.5 },
             { field: "carrera", headerName: <b>Carrera</b>, flex: 1 },
             { field: "turno", headerName: <b>Turno</b>, flex: 1 },
             { field: "rangoHorario", headerName: <b>Horario</b>, flex: 1 }
         ]
+
+        
+    useEffect(() => {
+        console.log("ACA" +JSON.stringify(materias))
+    }, [])
 
     return (
         <>
@@ -27,7 +33,7 @@ const TablaMaterias = (props) => {
                                     <DataGrid
                                         rows={materias}
                                         columns={columnasMaterias}
-                                        getRowId={row => row.idMateria}
+                                        getRowId={row => row.nroComision}
                                         autoHeight={true}
                                         disableColumnMenu
                                     />
