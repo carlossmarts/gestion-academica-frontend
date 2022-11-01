@@ -105,7 +105,7 @@ const AltaUsuarios = () => {
             setLoading(true)
             try {
                 const resUser = await altaUsuario(form)
-                alert(`Usuario creado con exito \n username: ${resUser.username} - contraseña: ${resUser.clave}`)
+                alert(`Usuario creado con exito \n username: ${resUser.value.username} - contraseña: ${resUser.value.clave}`)
                 limpiarCampos()
             } catch (error) {
                 console.log(error)

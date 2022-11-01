@@ -18,7 +18,7 @@ const GestionDocente = (props) => {
     const [comisionSeleccionada, setComisionSeleccionada] = useState({ idComision: 0 })
     const [inscriptos, setInscriptos] = useState([])
     const [inscriptosConSubida, setInscriptosConSubida] = useState([])
-    const [notasComision, setNotasComision] = useState(notas)
+    const [notasComision, setNotasComision] = useState([])
     const [loading, setLoading] = useState(false)
     const [subeNotas, setSubeNotas] = useState(false)
 
@@ -57,6 +57,7 @@ const GestionDocente = (props) => {
           "nombre": "Nota Definitiva"
         }
       ]
+      
     const generarNotasComision = () => {
         var notasAEnviar = []
         var notasActuales = subeNotas ? inscriptosConSubida : inscriptos

@@ -19,7 +19,7 @@ export const useDocentePresenter = () => {
         try {
             console.log("llamando al servicio traerMateriasDocente");
             //const res = await axios.get(`${baseUrl}/materias?idDocente=${idDocente}`)
-            const res = await axios.get(`${baseUrl}/materias?idDocente=15`)
+            const res = await axios.get(`${baseUrl}/materias?idDocente=75`)
             const ret = await res.data;
             return ret
         } catch (err) {
@@ -30,7 +30,7 @@ export const useDocentePresenter = () => {
     const traerAlumnosYNotas = async (idComision, idDocente) => {
         try {
             console.log("llamando al servicio traerAlumnosYNotas" + idDocente + " " + idComision);
-            const res = await axios.get(`${baseUrl}/alumnos/cursada?idDocente=15&idComision=5`)
+            const res = await axios.get(`${baseUrl}/alumnos/cursada?idDocente=75&idComision=139`)
             const ret = await res.data.alumnos;
             return ret
         } catch (err) {
