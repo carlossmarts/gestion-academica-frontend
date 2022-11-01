@@ -9,8 +9,7 @@ import { UserContext } from '../../context/UserContext';
 
 const MateriasInscripto = () => {
     const [loading, setLoading] = useState(false)
-    const [materiasInscripto, setMateriasInscripto] = useState([])
-
+    const [materiasInscripto, setMateriasInscripto] = useState([{ "anio": "", "diaHorario": "", "docente": "", "estado": "", "idDetalleInscripcion": 0, "idDia": "", "idInscripcion": "", "materia": "", "turno": "" }])
     const { user } = useContext(UserContext)
     const { traerInscripcionesAlumno, bajaInscripcionEstudiante } = useEstudiantePresenter()
 
@@ -18,11 +17,16 @@ const MateriasInscripto = () => {
         traerInscripcionesPrevias()
     }, [])
 
+    useEffect(() => {
+        console.log("???" + materiasInscripto.length + JSON.stringify(materiasInscripto))
+    }, [materiasInscripto])
+
     const traerInscripcionesPrevias = () => {
         setLoading(true)
         traerInscripcionesAlumno(user.idUsuario)
             .then((res) => {
-                Array.isArray(res) ? setMateriasInscripto(res) : setMateriasInscripto([res])
+                if (res)
+                    Array.isArray(res) ? setMateriasInscripto(res) : setMateriasInscripto([res])
                 setLoading(false)
             })
             .catch(e => console.log(e))
@@ -31,7 +35,7 @@ const MateriasInscripto = () => {
     const renderDetailsButton = (params) => {
         return (
             <>{
-                materiasInscripto && materiasInscripto.length !== 0 && params.row.estado === "Activo" ?
+                materiasInscripto.length !== 0 && params.row.estado === "Activo" ?
                     <Button
                         variant="text"
                         color="primary"
@@ -56,6 +60,7 @@ const MateriasInscripto = () => {
     }
 
     const columns = [
+        { field: "idInscripcion", headerName: <strong>Ins.</strong>, flex: 0.2, headerAlign: 'center', align: 'left' },
         { field: "materia", headerName: <strong>Materia</strong>, flex: 0.8, headerAlign: 'center', align: 'left' },
         { field: "turno", headerName: <strong>Turno</strong>, flex: 0.3, headerAlign: 'center', align: 'left' },
         { field: "diaHorario", headerName: <strong>Día/Horario</strong>, flex: 0.5, headerAlign: 'center', align: 'left' },
@@ -68,8 +73,12 @@ const MateriasInscripto = () => {
     return (
         <>
             <Typography style={styles.title}> Materias Asignadas </Typography>
-            {
-                materiasInscripto.length !== 0 ?
+            {loading ?
+                <Loader />
+                :
+                materiasInscripto.length === 1 && materiasInscripto[0].idDetalleInscripcion === 0 ?
+                    < Typography>No existen inscripciones realizadas</Typography>
+                    :
                     <Grid container justify="center">
                         <Box p={3} style={{ width: '90%' }}>
                             <Paper m={10}>
@@ -86,12 +95,6 @@ const MateriasInscripto = () => {
                             </Paper>
                         </Box>
                     </Grid>
-                    : !loading ?
-                        < Typography>No existen inscripciones disponibles para la seleccion</Typography>
-                        : null
-            }
-            {
-                loading ? <Loader /> : null
             }
         </>
     )

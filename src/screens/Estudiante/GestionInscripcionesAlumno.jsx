@@ -23,7 +23,7 @@ const GestionInscripcionesAlumno = (props) => {
     const [ciclosInscripcion, setCiclosInscripcion] = useState([])
     const [cicloInscripcionSeleccionado, setCicloInscripcionSeleccionado] = useState(0)
     const [materias, setMaterias] = useState([emptyMaterias])
-    const [materiasInscripto, setMateriasInscripto] = useState([])
+    const [materiasInscripto, setMateriasInscripto] = useState([{ "anio": "", "diaHorario": "", "docente": "", "estado": "", "idDetalleInscripcion": 0, "idDia": "", "idInscripcion": "", "materia": 0, "turno": "" }])
     const [loading, setLoading] = useState(false)
     const [loadingMaterias, setLoadingMaterias] = useState(false)
     const [loadingInscripcionesPrevias, setLoadingInscripcionesPrevias] = useState(false)
@@ -36,7 +36,8 @@ const GestionInscripcionesAlumno = (props) => {
         setLoadingInscripcionesPrevias(true)
         traerInscripcionesAlumno(user.idUsuario)
             .then((res) => {
-                Array.isArray(res) ? setMateriasInscripto(res) : setMateriasInscripto([res])
+                if (res)
+                    Array.isArray(res) ? setMateriasInscripto(res) : setMateriasInscripto([res])
                 setLoadingInscripcionesPrevias(false)
             })
             .catch(e => console.log(e))
@@ -69,7 +70,7 @@ const GestionInscripcionesAlumno = (props) => {
     const renderDetailsButton = (params) => {
         return (
             <>{
-                materiasInscripto && materiasInscripto.find((e) => { return e.materia === params.row.materia && e.estado == "Activo" }) ?
+                materiasInscripto && materiasInscripto.length !== 0 && materiasInscripto.find((e) => { return e.materia === params.row.materia && e.estado == "Activo" }) ?
                     <Button
                         variant="text"
                         color="primary"
