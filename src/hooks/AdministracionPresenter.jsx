@@ -106,6 +106,36 @@ export const useAdministracionPresenter = () => {
         }
     }
 
+    const saveCursada = async (body) =>{
+        try {
+            console.log("llamando al servicio saveCursada - body", JSON.stringify(body))
+            const url = `${baseUrl}/cursada`
+            const res = await axios.post(url, body);
+            const data = await res.data;
+            console.log( "saveCursada response ", data)
+            return data
+        } catch (err) {
+            console.error(err)
+            throw err
+        }
+    }
+
+    const saveExamen = async (body) =>{
+        try {
+            console.log("llamando al servicio saveExamen - body", JSON.stringify(body))
+            const url = `${baseUrl}/examen`
+            const res = await axios.post(url, body);
+            const data = await res.data;
+            console.log( "saveExamen response ", data)
+            return data
+        } catch (err) {
+            console.error(err)
+            throw err
+        }
+    }
+
+
+
     return {
         defaultCarrera,
         defaultTurno,
@@ -117,6 +147,8 @@ export const useAdministracionPresenter = () => {
         getMateriasByCarrera,
         getInscripciones,
         saveInscripcion,
-        getComisionesPorInstanciaYMateria
+        getComisionesPorInstanciaYMateria,
+        saveCursada,
+        saveExamen
     }
 }

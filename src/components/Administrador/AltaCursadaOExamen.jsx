@@ -10,6 +10,7 @@ import { useAdministracionPresenter } from '../../hooks/AdministracionPresenter'
 import { useUsuarioPresenter } from '../../hooks/UsuarioPresenter'
 import {getCurrentDate} from "../../UtilsMethods";
 import {UtilsContext} from "../../context/UtilsContext";
+import Loader from "../commons/Loader";
 
 const AltaCursadaOExamen = (props) =>{
 
@@ -19,7 +20,8 @@ const AltaCursadaOExamen = (props) =>{
 
 	const {
 		getMateriasByCarrera, defaultMateria,
-		getInscripciones, defaultInscripcion
+		getInscripciones, defaultInscripcion,
+		saveCursada, saveExamen
 	} = useAdministracionPresenter()
 
 	const {getDocentesByCarrera, defaultUsuario} = useUsuarioPresenter()
@@ -29,6 +31,7 @@ const AltaCursadaOExamen = (props) =>{
 	const [materias, setMaterias] = useState([defaultMateria])
 	const [docentes, setDocentes] = useState([defaultUsuario])
 	const [carrera, setCarrera] = useState(0)
+	const [loader, setLoader] = useState(false)
 
 	const [disabled, setDisabled] = useState(true)
 
@@ -153,6 +156,7 @@ const AltaCursadaOExamen = (props) =>{
 		if(!validar()) {
 			alert("faltan campos obligatorios")
 		} else {
+			setLoader(true)
 			const body = {
 				idMateria: idMateria,
 				dia: dia,
@@ -160,10 +164,14 @@ const AltaCursadaOExamen = (props) =>{
 				horaFin: fin.format("hh:mm"),
 				idTurno: idTurno,
 				idDocente: idDocente,
-				anio: anio,
-				cuatrimestre: cuatrimestre
+				anio: anio.toString(),
+				cuatrimestre: cuatrimestre,
+				idInscripcion: inscripcion
 			}
-			alert(`TODO- agregar cursada \n ${JSON.stringify(body)}`)
+			saveCursada(body)
+				.then(res=>alert("Cursada agregada"))
+				.catch(e=>alert("Error al agregar cursada" + e))
+				.finally(()=>setLoader(false))
 		}
 	}
 
@@ -171,21 +179,27 @@ const AltaCursadaOExamen = (props) =>{
 		if(!validar()) {
 			alert("faltan campos obligatorios")
 		} else {
+			setLoader(true)
 			const body ={
 				idMateria: idMateria,
 				idDocente: idDocente,
-				anio: anio,
+				anio: anio.toString(),
 				cuatrimestre: cuatrimestre,
 				fecha: fecha,
-				horaInicio: inicio.format("hh:mm")
+				horaInicio: inicio.format("hh:mm"),
+				idInscripcion: inscripcion
 			}
-			alert(`TODO- agregar examen \n ${JSON.stringify(body)}`)
+			saveExamen(body)
+				.then(res=>alert("Examen agregado"))
+				.catch(e=>alert("Error al agregar examen" + e))
+				.finally(()=>setLoader(false))
 		}
 	}
 
 	return(
 
 		<Grid container spacing={2}>
+			{loader? <Loader/>: null}
 			<Grid item container xs={12}>
 				<Typography style={styles.title}> {`Agregar ${origen}`}</Typography>
 			</Grid>

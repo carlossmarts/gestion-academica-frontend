@@ -41,7 +41,7 @@ const ResponsiveAppBar = (props) => {
             variant="h6"
             noWrap
             component="a"
-            href="/"
+            href="/gestion-academica-frontend/"
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
