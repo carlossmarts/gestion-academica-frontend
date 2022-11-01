@@ -42,7 +42,7 @@ const AltaCursadaOExamen = (props) =>{
 	const [idTurno, setIdTurno] = useState(0)
 	const [idDocente, setIdDocente] = useState(0)
 	const [fecha, setFecha] = useState("");
-	const [idInscripcion, setIdInscripcion] = useState(0);
+	const [inscripcion, setInscripcion] = useState(0);
 
 	//error
 	const newError = {
@@ -55,7 +55,7 @@ const AltaCursadaOExamen = (props) =>{
 		idTurno: false,
 		idDocente: false,
 		fecha: false,
-		idInscripcion: false
+		inscripcion: false
 	}
 	const [error, setError] = useState(newError)
 
@@ -95,6 +95,9 @@ const AltaCursadaOExamen = (props) =>{
 	}, [carrera])
 
 
+	useEffect(()=>{
+		console.log (inscripcion)
+	}, [inscripcion])
 
 	const validar  = ()=>{
 		let retorno = true
@@ -115,7 +118,7 @@ const AltaCursadaOExamen = (props) =>{
 			tempError.idTurno= true
 			retorno = false
 		}
-		if(idInscripcion === 0 || !idInscripcion){
+		if(inscripcion === 0 || !inscripcion){
 			tempError.idInscrpcion= true
 			retorno = false
 		}
@@ -212,21 +215,20 @@ const AltaCursadaOExamen = (props) =>{
 					inscripciones ?
 						<TextField
 							fullWidth
+							name="inscripcion"
 							select
 							size="small"
-							label="Ventana de inscripción"
-							value={idInscripcion}
-							onChange={(e)=>{setIdInscripcion(e.target.value)}}
+							label="Ventana de inscripcion"
+							value={inscripcion}
+							onChange={(e)=>{setInscripcion(e.target.value)}}
 						>
-							{
-								inscripciones.map(option =>(
-									<MenuItem key={option.idInscripcion} value={option.idInscripcion}>
-										{option.descripcion}
-									</MenuItem>
-								))
-							}
+							{inscripciones.map((option) => (
+								<MenuItem key={option.idInscripcion} value={option.idInscripcion}>
+									{option.descripcion}
+								</MenuItem>
+							))}
 						</TextField>
-					: null
+						: null
 				}
 			</Grid>
 			{

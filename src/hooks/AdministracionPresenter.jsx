@@ -2,6 +2,7 @@
 import axios from 'axios'
 
 import {getCurrentDate} from "../UtilsMethods";
+import {useState} from "react";
 
 export const useAdministracionPresenter = () => {
 
@@ -80,6 +81,7 @@ export const useAdministracionPresenter = () => {
             const res = await axios.post(url, body);
             const data = await res.data;
             console.log( "saveInscripcion response ", data)
+            return data
         } catch (err) {
             console.error(err)
         }

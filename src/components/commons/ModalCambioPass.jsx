@@ -117,7 +117,7 @@ const ModalCambioPass = (props) => {
                             </IconButton>
                         </Grid>
                         <Grid item container justifyContent="center" >
-                            <Button onClick={validarYEnviar} color="secondary" variant="contained">
+                            <Button onClick={validarYEnviar} color="primary" variant="contained">
                                 Aceptar
                             </Button>
                         </Grid>

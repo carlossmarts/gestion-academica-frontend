@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import {styles} from "../../styles/styles";
 import {Grid, Button, Typography, TextField, MenuItem} from '@mui/material'
 import {useAdministracionPresenter} from "../../hooks/AdministracionPresenter";
+import Loader from "../commons/Loader";
 
 const GestionInscripciones = () => {
 
@@ -13,6 +14,7 @@ const GestionInscripciones = () => {
     const [fechaFin, setFechaFin] = useState("");
     const [instancia, setInstancia] = useState(0);
     const [descripcion, setDescripcion] = useState("");
+    const [loader, setLoader] = useState(false);
 
     const newError = {
         desde: false,
@@ -52,10 +54,10 @@ const GestionInscripciones = () => {
     }
 
     const guardar = ()=> {
-
         if(!validar()){
             alert("Falta completar campos obligatorios")
         } else {
+            setLoader(true)
             const body={
                 instancia: instancia,
                 descripcion: descripcion,
@@ -65,11 +67,15 @@ const GestionInscripciones = () => {
                 fechaFin: fechaFin
             }
             saveInscripcion(body)
+                .then((res)=>alert(`inscripcion "${res.descripcion}" creada`))
+                .catch(e=>console.log(e))
+                .finally(()=>setLoader(false))
         }
     }
 
     return (
         <Grid container spacing={2}>
+            {loader ? <Loader/> : null}
             <Grid item xs={12}>
                 <Typography style={styles.title}> Agregar ventana de inscripcion</Typography>
             </Grid>
