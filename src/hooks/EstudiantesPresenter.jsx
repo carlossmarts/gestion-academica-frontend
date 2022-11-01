@@ -36,7 +36,7 @@ export const useEstudiantePresenter = () => {
             const url = `${baseUrl}/?operacion=traerInscripcionesPorEstudiante&idUsuario=${idAlumno}`
             const res = await axios.get(url);
             const yaInscripto = await res.data.return.inscripcionesEstudiante;
-            console.log("traerInscripcionesAlumno response ", JSON.stringify(res))
+            console.log("traerInscripcionesAlumno response ", JSON.stringify(yaInscripto))
             return yaInscripto
         } catch (err) {
             console.error(err)
