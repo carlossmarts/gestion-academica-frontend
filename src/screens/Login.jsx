@@ -88,7 +88,7 @@ const Login = () => {
                         resUser.idTipoUsuario === 3 ?
                             history({ pathname: "/" }) :
                             resUser.idTipoUsuario === 2 ?
-                                history({ pathname: "/" }) : history({ pathname: "/" })
+                                history({ pathname: "/materiasasignadas" }) : history({ pathname: "/inscripciones" })
                     }
                 } else {
                     setErrorLogin("error, verifique usuario y contraseña")
