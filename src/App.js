@@ -14,7 +14,6 @@ import Login from './screens/Login'
 import Administracion from './screens/Administrador/Administracion';
 import Reportes from './components/Administrador/Reportes';
 import GestionInscripcionesAlumno from './screens/Estudiante/GestionInscripcionesAlumno';
-import Analitico from './components/Estudiantes/Analitico';
 import GestionDocente from './screens/Docente/GestionDocente';
 import EdicionPerfil from './components/commons/EdicionPerfil';
 import MateriasDocente from './screens/Docente/MateriasDocente';
@@ -38,7 +37,6 @@ const App = () => {
                 <Route exact path={'/administracion'} element={<Administracion />} />
                 <Route exact path={'/inscripciones'} element={<GestionInscripcionesAlumno />} />
                 <Route exact path={'/reportes'} element={<Reportes />} />
-                <Route exact path={'/analitico'} element={<Analitico />} />
                 <Route exact path={'/perfil/:id'} element={<EdicionPerfil />} />
                 <Route exact path={'/docente'} element={<GestionDocente />} />
                 <Route exact path={'/materiasasignadas'} element={<MateriasDocente />} />

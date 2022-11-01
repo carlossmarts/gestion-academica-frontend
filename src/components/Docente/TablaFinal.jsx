@@ -2,7 +2,7 @@ import { Box, Grid, Paper, Typography } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid';
 import React from 'react';
 
-const TablaFinales = (props) => {
+const TablaFinal= (props) => {
 
     const {
         inscriptos
@@ -13,9 +13,9 @@ const TablaFinales = (props) => {
             { field: "dni", headerName: <b>DNI</b>, flex: 0.5 },
             { field: "nombre", headerName: <b>Nombre</b>, flex: 0.5 },
             { field: "apellido", headerName: <b>Apellido</b>, flex: 0.5 },
-            { field: "primerParcial", headerName: <b>Primer Parcial</b>, flex: 0.5, editable: true },
-            { field: "segundoparcial", headerName: <b>Segundo Parcial</b>, flex: 0.5, editable: true },
-            { field: "notaCursada", headerName: <b>Nota Cursada</b>, flex: 0.5 }
+            { field: "notaCursada", headerName: <b>Nota Cursada</b>, flex: 0.5 },
+            { field: "notaFinal", headerName: <b>Nota Examen Final</b>, flex: 0.5, editable: true },
+            { field: "notaDefinitiva", headerName: <b>Nota Definitiva</b>, flex: 0.5 }
         ]
 
     return (
@@ -29,7 +29,7 @@ const TablaFinales = (props) => {
                                     <DataGrid
                                         rows={inscriptos}
                                         columns={columnasNotas}
-                                        getRowId={row => row.idEstudiante}
+                                        getRowId={row => row.dni}
                                         autoHeight={true}
                                         disableColumnMenu
                                     />
@@ -44,4 +44,4 @@ const TablaFinales = (props) => {
     )
 }
 
-export default TablaFinales
+export default TablaFinal
