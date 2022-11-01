@@ -1,20 +1,22 @@
 import { Typography } from '@mui/material'
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useDocentePresenter } from '../../hooks/DocentePresenter'
 import TablaMaterias from '../../components/Docente/TablaMaterias'
 import Loader from '../../components/commons/Loader'
 import { styles } from '../../styles/styles'
+import { UserContext } from '../../context/UserContext';
 
 
 const MateriasDocente = () => {
     const [materias, setMaterias] = useState([])
     const [loading, setLoading] = useState(false)
+    const { user } = useContext(UserContext)
 
     const { traerMateriasDocente } = useDocentePresenter()
 
     useEffect(() => {
         setLoading(true)
-        traerMateriasDocente()
+        traerMateriasDocente(user.idUsuario)
             .then((res) => {
                 setLoading(false)
                 setMaterias(res ?? [])
@@ -31,7 +33,6 @@ const MateriasDocente = () => {
                     :
                     null
             }
-
             {
                 loading ? <Loader /> : null
             }

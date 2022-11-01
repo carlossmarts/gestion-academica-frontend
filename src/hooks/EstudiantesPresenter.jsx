@@ -48,7 +48,7 @@ export const useEstudiantePresenter = () => {
             console.log("llamando al servicio altaInscripcionEstudiante con idUsuario idInscripcion idComision", idUsuario, idInscripcion, idComision);
             const url = `${baseUrl}/?operacion=altaInscripcionEstudiante&idUsuario=${idUsuario}&idInscripcion=${idInscripcion}&idComision=${idComision}`
             const res = await axios.get(url);
-            console.log(JSON.stringify(res))
+            console.log("altaInscripcionEstudiante " + JSON.stringify(res))
             return res.data.return.estado
         } catch (err) {
             console.error(err)
@@ -60,7 +60,7 @@ export const useEstudiantePresenter = () => {
             console.log("llamando al servicio bajaInscripcionEstudiante con idDetalleInscripcion " + idDetalleInscripcion)
             const url = `${baseUrl}/?operacion=bajaInscripcionEstudiante&idDetalleInscripcion=${idDetalleInscripcion}`
             const res = await axios.get(url);
-            console.log("??" + JSON.stringify(res.data.return.estado))
+            console.log("bajaInscripcionEstudiante " + JSON.stringify(res.data.return.estado))
             return res.data.return.estado
 
         } catch (err) {

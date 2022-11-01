@@ -23,6 +23,39 @@ const GestionDocente = (props) => {
 
     const { traerComisionesDeDocente, traerAlumnosYNotas, actualizarNotas } = useDocentePresenter()
 
+
+    useEffect(() => {
+        setLoading(true)
+        traerComisionesDeDocente(user.idUsuario)
+            .then((res) => {
+                setLoading(false)
+                setComisiones(res ?? [])
+            })
+            .catch(e => console.log(e))
+    }, [])
+
+    useEffect(() => {
+        if (comisionSeleccionada.idComision !== 0) {
+            setLoading(true)
+            traerAlumnosYNotas(comisionSeleccionada.idComision, user.idUsuario)
+                .then((res) => {
+                    setLoading(false)
+                    setInscriptos(res ?? [])
+                })
+                .catch(e => console.log(e))
+        }
+    }, [comisionSeleccionada])
+
+    useEffect(() => {
+        if (comisionSeleccionada.idComision !== 0) {
+            const hoy = new Date();
+            const fechaLimite = new Date(comisionSeleccionada.fechaFin);
+            // logica para ver si se edita o no la cosa dentroDeFecha
+            console.log("fecha Limite " + fechaLimite)
+            setDentroDeFecha(hoy >= fechaLimite)
+        }
+    }, [comisionSeleccionada])
+
     const generarNotasComision = () => {
         let notasAEnviar = []
         let notasActuales = subeNotas ? inscriptosConSubida : inscriptos
@@ -86,31 +119,6 @@ const GestionDocente = (props) => {
         subeNotas ? setInscriptosConSubida(notasActuales) : setInscriptos(notasActuales)
     }
 
-    useEffect(() => {
-        setLoading(true)
-        traerComisionesDeDocente()
-            .then((res) => {
-                setLoading(false)
-                setComisiones(res ?? [])
-            })
-            .catch(e => console.log(e))
-    }, [])
-
-    useEffect(() => {
-        if (comisionSeleccionada) {
-            setLoading(true)
-            traerAlumnosYNotas(comisionSeleccionada.idComision, user.idUsuario)
-                .then((res) => {
-                    setLoading(false)
-                    setInscriptos(res ?? [])
-                })
-                .catch(e => console.log(e))
-        }
-        const hoy = new Date();
-        //logica para ver si se edita o no la cosa dentroDeFecha
-        setDentroDeFecha(hoy >= comisionSeleccionada.fechaLimite)
-    }, [comisionSeleccionada])
-
     const subirArchivo = (e) => {
         e.preventDefault();
         if (e.target.files) {
@@ -152,6 +160,7 @@ const GestionDocente = (props) => {
                                 <TablaCursada inscriptos={inscriptos} actualizarNotaEnTabla={actualizarNotaEnTabla}></TablaCursada>
                                 :
                                 <TablaCursada inscriptos={inscriptosConSubida} actualizarNotaEnTabla={actualizarNotaEnTabla}></TablaCursada>
+
                             : !subeNotas ?
                                 <TablaFinal inscriptos={inscriptos} actualizarNotaEnTabla={actualizarNotaEnTabla}></TablaFinal>
                                 :
@@ -175,7 +184,7 @@ const GestionDocente = (props) => {
                                 </Grid>
                                 <Grid item xs={6}>
                                     <Button variant="contained" component="span">
-                                        <a href={`https://gestion-academica-middleware.herokuapp.com/reportes/?operacion=traerEstudiantesInscriptosPorMateria&idComision=${comisionSeleccionada.idComision}`}>
+                                        <a style={{ 'text-decoration': 'none', "color":"white" }} target="_blank" href={`https://gestion-academica-middleware.herokuapp.com/reportes/?operacion=traerEstudiantesInscriptosPorMateria&idComision=${comisionSeleccionada.idComision}`}>
                                             Descargar Planilla
                                         </a>
                                     </Button>

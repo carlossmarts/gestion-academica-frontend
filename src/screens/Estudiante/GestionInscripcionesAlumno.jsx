@@ -66,12 +66,6 @@ const GestionInscripcionesAlumno = (props) => {
         }
     }, [cicloInscripcionSeleccionado])
 
-
-    useEffect(() => {
-        console.log(JSON.stringify(cicloInscripcionSeleccionado) +
-            " test")
-    }, [cicloInscripcionSeleccionado])
-
     const renderDetailsButton = (params) => {
         return (
             <>{
