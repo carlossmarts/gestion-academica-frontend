@@ -3,12 +3,12 @@ import {blue, grey, red, green} from '@mui/material/colors'
 export const styles = {
     title:{
         fontSize:18,
-        color: blue[700],
+        color: "#780129",
         fontWeight: "bold"
     },
     label:{
         fontSize:16,
-        color: blue[700]
+        color: "#780129"
     }, 
     pdf:{
         fontSize: 30,
