@@ -184,10 +184,10 @@ const Login = () => {
                         }
                     </Box>
                     <Box m={2} display="flex" justifyContent="space-around">
-                        <Button onClick={validarYEnviar} variant="contained" color="secondary">
+                        <Button onClick={validarYEnviar} variant="contained" color="primary">
                             Aceptar
                         </Button>
-                        <Button onClick={irAHome} variant="outlined" color="secondary">
+                        <Button onClick={irAHome} variant="outlined" color="primary">
                             Cancelar
                         </Button>
 

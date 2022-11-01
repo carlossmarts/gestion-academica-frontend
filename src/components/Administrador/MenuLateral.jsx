@@ -90,7 +90,7 @@ const styles = {
             backgroundColor: grey[500],
         },
         height: 50,
-        color: blue[700],
+        color: "#780129",
         fontSize: 14,
     }
 }

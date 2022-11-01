@@ -21,7 +21,13 @@ import MateriasDocente from './screens/Docente/MateriasDocente';
 
 
 const App = () => {
-  const theme = createTheme();
+  const theme = createTheme({
+    palette:{
+      primary: {
+        main:"#780129"
+      }
+    },
+  });
 
   return (
     <UtilsProvider>
