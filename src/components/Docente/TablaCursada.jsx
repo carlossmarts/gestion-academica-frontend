@@ -6,12 +6,12 @@ const TablaCursada = (props) => {
 
     const {
         inscriptos,
-        test
+        actualizarNotaEnTabla
     } = props
 
     const columnasNotas =
         [
-            { field: "dni", headerName: test, flex: 0.5 },
+            { field: "dni", headerName: <b>DNI</b>, flex: 0.5 },
             { field: "nombre", headerName: <b>Nombre</b>, flex: 0.5 },
             { field: "apellido", headerName: <b>Apellido</b>, flex: 0.5 },
             { field: "primerParcial", headerName: <b>Primer Parcial</b>, flex: 0.5, editable: true },
@@ -33,6 +33,7 @@ return (
                                     getRowId={row => row.dni}
                                     autoHeight={true}
                                     disableColumnMenu
+                                    onCellEditCommit={actualizarNotaEnTabla}
                                 />
                             </Box>
                         </Paper>
