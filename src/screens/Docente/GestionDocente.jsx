@@ -18,6 +18,7 @@ const GestionDocente = (props) => {
     const [inscriptos, setInscriptos] = useState([])
     const [inscriptosConSubida, setInscriptosConSubida] = useState([])
     const [loading, setLoading] = useState(false)
+    const [dentroDeFecha, setDentroDeFecha] = useState(false)
     const [subeNotas, setSubeNotas] = useState(false)
 
     const { traerComisionesDeDocente, traerAlumnosYNotas, actualizarNotas } = useDocentePresenter()
@@ -29,18 +30,18 @@ const GestionDocente = (props) => {
             comisionSeleccionada.tipoInstancia === 1 ?
                 notasAEnviar.push(
                     {
-                        "idComision": 139, //comisionSeleccionada.idComision,
+                        "idComision": comisionSeleccionada.idComision,
                         "idEstudiante": obj.idEstudiante,
                         "idTipoNota": 1,
                         "nota": obj.primerParcial,
-                        "fecha": getCurrentDate()
+                        "fecha": getCurrentDate('-')
                     },
                     {
-                        "idComision": 139, //comisionSeleccionada.idComision,
+                        "idComision": comisionSeleccionada.idComision,
                         "idEstudiante": obj.idEstudiante,
                         "idTipoNota": 2,
                         "nota": obj.segundoParcial,
-                        "fecha": getCurrentDate()
+                        "fecha": getCurrentDate('-')
                     }
                 )
                 :
@@ -50,7 +51,7 @@ const GestionDocente = (props) => {
                         "idEstudiante": notasActuales.idEstudiante,
                         "idTipoNota": 11,
                         "nota": obj.notaFinal,
-                        "fecha": getCurrentDate
+                        "fecha": getCurrentDate('-')
                     }
                 )
         })
@@ -105,6 +106,9 @@ const GestionDocente = (props) => {
                 })
                 .catch(e => console.log(e))
         }
+        const hoy = new Date();
+        //logica para ver si se edita o no la cosa dentroDeFecha
+        setDentroDeFecha(hoy >= comisionSeleccionada.fechaLimite)
     }, [comisionSeleccionada])
 
     const subirArchivo = (e) => {
@@ -119,7 +123,7 @@ const GestionDocente = (props) => {
                 const json = XLSX.utils.sheet_to_json(worksheet);
 
                 //actualizando valores
-                var inscriptosSinSubida = inscriptos
+                let inscriptosSinSubida = inscriptos
                 json.forEach((obj) => {
                     inscriptosSinSubida = inscriptosSinSubida.map(
                         el => el.dni == obj['DNI'] ? { ...el, segundoParcial: obj['Parcial 2'], primerParcial: obj['Parcial 1'] } : el
@@ -143,7 +147,7 @@ const GestionDocente = (props) => {
             {
                 comisionSeleccionada.idComision !== 0 ?
                     <>
-                        {comisionSeleccionada.tipoInstancia === 2 ?
+                        {comisionSeleccionada.tipoInstancia === 1 ?
                             !subeNotas ?
                                 <TablaCursada inscriptos={inscriptos} actualizarNotaEnTabla={actualizarNotaEnTabla}></TablaCursada>
                                 :
@@ -164,7 +168,7 @@ const GestionDocente = (props) => {
                                             type="file"
                                             onChange={subirArchivo}
                                         />
-                                        <Button variant="contained" component="span">
+                                        <Button disabled={dentroDeFecha} variant="contained" component="span">
                                             Subir Notas
                                         </Button>
                                     </label>
@@ -177,7 +181,7 @@ const GestionDocente = (props) => {
                                     </Button>
                                 </Grid>
                                 <Grid item xs={6}>
-                                    <Button variant="contained" onClick={() => { guardarNotas() }} component="span">
+                                    <Button disabled={dentroDeFecha} variant="contained" onClick={() => { guardarNotas() }} component="span">
                                         Guardar Cambios
                                     </Button>
                                 </Grid>

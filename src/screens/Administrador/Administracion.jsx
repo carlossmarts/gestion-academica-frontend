@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {Grid, Box} from "@mui/material";
+import {Grid} from "@mui/material";
 import MenuLateral from "../../components/Administrador/MenuLateral";
 import AltaUsuarios from '../../components/Administrador/AltaUsuarios';
 import GestionCuatrimestres from '../../components/Administrador/GestionCuatrimestres'
@@ -16,7 +16,6 @@ const Administracion = () => {
 
 
     return (
-
         <Grid container direction='row' alignItems="flex-start">
             <Grid item  xs={12} sm={3}container >
                 <MenuLateral
@@ -46,9 +45,7 @@ const Administracion = () => {
                         : null
                 }
             </Grid>
-
         </Grid>
-
     )
 }
 
