@@ -184,7 +184,7 @@ const GestionDocente = (props) => {
                                 </Grid>
                                 <Grid item xs={6}>
                                     <Button variant="contained" component="span">
-                                        <a style={{ 'text-decoration': 'none', "color":"white" }} target="_blank" href={`https://gestion-academica-middleware.herokuapp.com/reportes/?operacion=traerEstudiantesInscriptosPorMateria&idComision=${comisionSeleccionada.idComision}`}>
+                                        <a style={{ 'text-decoration': 'none', "color":"white" }} href={`https://gestion-academica-middleware.herokuapp.com/reportes/?operacion=traerEstudiantesInscriptosPorMateria&idComision=${comisionSeleccionada.idComision}`}>
                                             Descargar Planilla
                                         </a>
                                     </Button>

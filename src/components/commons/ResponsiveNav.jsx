@@ -77,8 +77,9 @@ const ResponsiveAppBar = (props) => {
                   {
                     user.idTipoUsuario === 1 ? //estudiante
                       <Grid container justifyContent="flex-start" spacing={1}>
-                        <Button onClick={() => goTo("/inscripciones")} sx={styles.navItem}>Inscripciones</Button>
-                        <a href={`${reporteUrl}/?operacion=traerMateriasAprobadasPorEstudiante&idUsuario=${user.idUsuario}`} style={{'text-decoration': 'none'}} target="_blank">
+                        <Button onClick={() => goTo("/inscripciones")} sx={styles.navItem}>Historico</Button>
+                        <Button onClick={() => goTo("/gestioninscripciones")} sx={styles.navItem}>Inscripciones</Button>
+                       <a href={`${reporteUrl}/?operacion=traerMateriasAprobadasPorEstudiante&idUsuario=${user.idUsuario}`} style={{'text-decoration': 'none'}} target="_blank">
                           <Button onClick={() => goTo("/analitico")} sx={styles.navItem}>Analitico</Button>
                         </a>
                         <Button onClick={() => goTo(`/perfil/${user.idUsuario}`)} sx={styles.navItem}>Perfil</Button>
